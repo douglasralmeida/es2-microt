@@ -1,35 +1,37 @@
-MÛdulo 1 - Usu·rios
+ÔªøM√≥dulo 1 - Usu√°rios
 ===================
 BD: 
  tabela mt_usuarios
-  id_usuario - ID do usu·rio
-  apelido    - apelido/login
-  nome       - nome completo
-  bio        - biografia curta
+  id_usuario - ID do usu√°rio [INT, PK, NOT NULL]
+  apelido    - apelido/login [VARCHAR(16), NOT NULL]
+  nome       - nome completo [VARCHAR(64), NOT NULL]
+  bio        - biografia curta [VARCHAR(128)]
  tabela mt_seguindo
-  idseguidor - ID do usu·rio seguidor
-  idseguido  - ID do usu·rio seguido
+  idseguidor - ID do usu√°rio seguidor [INT, FK, NOT NULL]
+  idseguido  - ID do usu√°rio seguido  [INT, FK, NOT NULL]
 
 URLS:
  url/usuario/registrar       - URL para cadastrar usuario
- url/usuario/abandonar/@id   - URL para remover o usu·rio @id
- url/usuario/@id/seguir	     - URL para seguir usu·rio @id
- url/usuario/@id/deixar	     - URL para deixar de seguir o usu·rio @id
+ url/usuario/abandonar/@id   - URL para remover o usu√°rio @id
+ url/usuario/@id/seguir	     - URL para seguir usu√°rio @id
+ url/usuario/@id/deixar	     - URL para deixar de seguir o usu√°rio @id
+ url/usuario/@id/seguidos    - URL para retornar aqueles que o usu√°rio @id segue
 
-MÛdulo 2 - Mensagens
+M√≥dulo 2 - Mensagens
 ====================
 BD:
  tabela mt_mensagens
-  id_msg    - ID da mensagem
-  tipo	    - Tipo de mensagem
-  conteudo  - Conte˙do da mensagem
+  id_msg    - ID da mensagem [INT, PK, NOT NULL]
+  id_us	    - ID do usu√°rio que a postou [INT, NOT NULL]
+  conteudo  - Conte√∫do da mensagem [VARCHAR(140), NOT NULL]
 
 URLS:
- url/mensagem/postar      - URL para postar uma mensagem
- url/mensagem/@id         - URL para recuperar a mensagem @id
+ url/msg/postar      - URL para postar uma mensagem
+ url/msg/@id         - URL para recuperar a mensagem @id
+ url/umsg/@id         - URL para recuperar as mensagens do usu√°rio @id
 
-MÛdulo 3 - Linha do Tempo
+M√≥dulo 3 - Linha do Tempo
 =========================
 URLS:
-  url/lt/usuario/@id/postagens    - URL para recuperar todas as mensagens do usu·rio @id
-  url/lt/usuario/@id/mural	  - URL para recuperar todas as mensagens do usu·rio @id e de todos aqueles que ele segue
+  url/lt/usuario/@id/postagens    - URL para recuperar todas as mensagens do usu√°rio @id
+x  url/lt/usuario/@id/mural	  - URL para recuperar todas as mensagens do usu√°rio @id e de todos aqueles que ele segue
