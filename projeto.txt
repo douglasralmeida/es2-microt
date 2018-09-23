@@ -11,11 +11,11 @@ BD:
   idseguido  - ID do usuário seguido  [INT, FK, NOT NULL]
 
 URLS:
- url/usuario/registrar       - URL para cadastrar usuario
- url/usuario/abandonar/@id   - URL para remover o usuário @id
- url/usuario/@id/seguir	     - URL para seguir usuário @id
- url/usuario/@id/deixar	     - URL para deixar de seguir o usuário @id
- url/usuario/@id/seguidos    - URL para retornar aqueles que o usuário @id segue
+ url/usuario/registrar		- URL para cadastrar usuario
+ url/usuario/abandonar/@id	- URL para remover o usuário @id
+ url/usuario/seguir/@apelido	- URL para seguir usuário @apelido
+ url/usuario/deixar/@apelido	- URL para deixar de seguir o usuário @apelido
+ url/usuario/seguidos/@apelido	- URL para retornar aqueles que o usuário @apelido segue
 
 Módulo 2 - Mensagens
 ====================
@@ -28,10 +28,10 @@ BD:
 URLS:
  url/msg/postar      - URL para postar uma mensagem
  url/msg/@id         - URL para recuperar a mensagem @id
- url/umsg/@id         - URL para recuperar as mensagens do usuário @id
+ url/umsg/@id        - URL para recuperar as mensagens do usuário @id
 
 Módulo 3 - Linha do Tempo
 =========================
 URLS:
-  url/lt/usuario/@id/postagens    - URL para recuperar todas as mensagens do usuário @id
-  url/lt/usuario/@id/mural	  - URL para recuperar todas as mensagens do usuário @id e de todos aqueles que ele segue
+  url/lt/@apelido/		- URL para recuperar todas as mensagens do usuário @apelido e de todos aqueles que ele segue
+  url/lt/usuario/@apelido/	- URL para recuperartodas as mensagens do usuário @apelido	
