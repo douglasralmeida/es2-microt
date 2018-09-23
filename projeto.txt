@@ -2,36 +2,37 @@
 ===================
 BD: 
  tabela mt_usuarios
-  id_usuario - ID do usuário [INT, PK, NOT NULL]
+  id_usuario - ID do usuário [SERIAL, PK]
   apelido    - apelido/login [VARCHAR(16), NOT NULL]
   nome       - nome completo [VARCHAR(64), NOT NULL]
   bio        - biografia curta [VARCHAR(128)]
  tabela mt_seguindo
   idseguidor - ID do usuário seguidor [INT, FK, NOT NULL]
   idseguido  - ID do usuário seguido  [INT, FK, NOT NULL]
+  PK(idseguidor, idseguido)
 
 URLS:
  url/usuario/registrar		- URL para cadastrar usuario
  url/usuario/abandonar/@id	- URL para remover o usuário @id
- url/usuario/seguir/@apelido	- URL para seguir usuário @apelido
- url/usuario/deixar/@apelido	- URL para deixar de seguir o usuário @apelido
- url/usuario/seguidos/@apelido	- URL para retornar aqueles que o usuário @apelido segue
+ url/usuario/seguir/@id		- URL para seguir usuário @id
+ url/usuario/deixar/@id		- URL para deixar de seguir o usuário @id
+ url/usuario/seguidos/@id	- URL para retornar aqueles que o usuário @id segue
 
 Módulo 2 - Mensagens
 ====================
 BD:
  tabela mt_mensagens
-  id_msg    - ID da mensagem [INT, PK, NOT NULL]
-  id_us	    - ID do usuário que a postou [INT, NOT NULL]
+  id_msg    - ID da mensagem [SERIAL, PK]
+  usuario   - ID do usuário que a postou [INT, NOT NULL]
   conteudo  - Conteúdo da mensagem [VARCHAR(140), NOT NULL]
 
 URLS:
  url/msg/postar      - URL para postar uma mensagem
  url/msg/@id         - URL para recuperar a mensagem @id
- url/umsg/@id        - URL para recuperar as mensagens do usuário @id
+ url/umsg/@usuario   - URL para recuperar as mensagens do usuário @usuario
 
 Módulo 3 - Linha do Tempo
 =========================
 URLS:
-  url/lt/@apelido/		- URL para recuperar todas as mensagens do usuário @apelido e de todos aqueles que ele segue
-  url/lt/usuario/@apelido/	- URL para recuperartodas as mensagens do usuário @apelido	
+  url/lt/@id/			- URL para recuperar todas as mensagens do usuário @id e de todos aqueles que ele segue
+  url/lt/usuario/@id/		- URL para recuperartodas as mensagens do usuário @id
