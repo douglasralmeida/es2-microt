@@ -34,4 +34,4 @@ Módulo 3 - Linha do Tempo
 =========================
 URLS:
   url/lt/usuario/@id/postagens    - URL para recuperar todas as mensagens do usuário @id
-x  url/lt/usuario/@id/mural	  - URL para recuperar todas as mensagens do usuário @id e de todos aqueles que ele segue
+  url/lt/usuario/@id/mural	  - URL para recuperar todas as mensagens do usuário @id e de todos aqueles que ele segue
