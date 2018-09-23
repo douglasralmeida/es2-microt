@@ -1,0 +1,35 @@
+Módulo 1 - Usuários
+===================
+BD: 
+ tabela mt_usuarios
+  id_usuario - ID do usuário
+  apelido    - apelido/login
+  nome       - nome completo
+  bio        - biografia curta
+ tabela mt_seguindo
+  idseguidor - ID do usuário seguidor
+  idseguido  - ID do usuário seguido
+
+URLS:
+ url/usuario/registrar       - URL para cadastrar usuario
+ url/usuario/abandonar/@id   - URL para remover o usuário @id
+ url/usuario/@id/seguir	     - URL para seguir usuário @id
+ url/usuario/@id/deixar	     - URL para deixar de seguir o usuário @id
+
+Módulo 2 - Mensagens
+====================
+BD:
+ tabela mt_mensagens
+  id_msg    - ID da mensagem
+  tipo	    - Tipo de mensagem
+  conteudo  - Conteúdo da mensagem
+
+URLS:
+ url/mensagem/postar      - URL para postar uma mensagem
+ url/mensagem/@id         - URL para recuperar a mensagem @id
+
+Módulo 3 - Linha do Tempo
+=========================
+URLS:
+  url/lt/usuario/@id/postagens    - URL para recuperar todas as mensagens do usuário @id
+  url/lt/usuario/@id/mural	  - URL para recuperar todas as mensagens do usuário @id e de todos aqueles que ele segue

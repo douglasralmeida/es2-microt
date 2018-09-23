@@ -1,0 +1,12 @@
+{
+  "mensagens": [
+    {
+      "id": "000",
+      "conteudo": "textotextotexto1"
+    },
+    {
+      "id": "001",
+      "conteudo": "textotextotexto2"
+    }
+  ]
+}
