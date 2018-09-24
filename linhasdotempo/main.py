@@ -1,7 +1,7 @@
 ## Módulo Linha do Tempo do microT
 
 from flask import Flask
-import urllib2 as httpclient
+from urllib.request import urlopen
 import os
 
 URL_MSG_BY_USER = 'https://mtmensagens.herokuapp.com/umsg/%s'
@@ -13,8 +13,7 @@ def home():
   return 'microT Timeline Microservice'
 
 def downloadData(url):
-  response = httpclient.urlopen(url)
-
+  response = urlopen(url)
   return response
 
 @app.route("/lt/<id>")
