@@ -4,6 +4,7 @@ from flask import Flask
 from flask import request
 import db
 
+SQL_USUA_LISTAR = 'SELECT id_usuario, apelido FROM mtusuarios.usuarios;'
 SQL_USUA_INSERIR = 'INSERT INTO mtusuarios.usuarios (apelido, nome, bio) VALUES (%s, %s, %s);'
 SQL_USUA_EXCLUIR = 'DELETE FROM mtusuarios.usuarios WHERE id_usuario = %s;'
 SQL_USUA_SEGUIR = 'INSERT INTO mtusuarios.seguindo (idseguidor, idseguindo) VALUES (%s, %s);'
@@ -17,6 +18,12 @@ conn = db.conectar()
 @app.route('/')
 def home():
   return 'microT Users Microservice'
+
+@app.route("/usuario/listar")
+def listar():
+  resultado = db.retornarVarios(conn, SQL_USUA_LISTAR)
+  
+  return resultado
 
 @app.route("/usuario/registrar")
 def registrar():
