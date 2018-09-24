@@ -22,7 +22,7 @@ def getListaUsuarios(uid):
   lista = []
   jsondata = downloadData(URL_SEGUIDOS % uid)
   data = json.load(jsondata)  
-  for x in data
+  for x in data:
     lista.append(x)
   return lista
 
