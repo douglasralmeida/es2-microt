@@ -23,7 +23,7 @@ def getListaUsuarios(uid):
   jsondata = downloadData(URL_SEGUIDOS % uid)
   data = json.load(jsondata)  
   for x in data:
-    lista.append(x)
+    lista.append(x.['id_usuario'])
   return lista
 
 @app.route("/lt/<id>")
