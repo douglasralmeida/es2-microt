@@ -3,8 +3,10 @@
 from flask import Flask
 from urllib.request import urlopen
 import os
+import json
 
 URL_MSG_BY_USER = 'https://mtmensagens.herokuapp.com/umsg/%s'
+URL_SEGUIDOS = 'https://mtusuarios.herokuapp.com/usuario/seguidos/%s'
 
 app = Flask(__name__)
 
@@ -16,9 +18,19 @@ def downloadData(url):
   response = urlopen(url)
   return response.read()
 
+def getListaUsuarios(uid):
+  lista = []
+  jsondata = downloadData(URL_SEGUIDOS % uid)
+  data = json.load(jsondata)  
+  for x in data
+    lista.append(x)
+  return lista
+
 @app.route("/lt/<id>")
 def timelinetodos(id):
-  return "Ação: LISTAR MSGS DO USUARIO ID E DAQUELES QUE ELE SEGUE VIA HTTP"
+  return getListaUsuarios(id)
+
+  #return "Ação: LISTAR MSGS DO USUARIO ID E DAQUELES QUE ELE SEGUE VIA HTTP"
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
