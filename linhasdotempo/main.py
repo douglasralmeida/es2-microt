@@ -34,7 +34,7 @@ def timelinetodos(id):
   lista = getListaUsuarios(id)
   for i in lista:
     data.append = downloadData(URL_MSG_BY_USER % i)
-  return jsonify(lista)
+  return jsonify(data)
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
