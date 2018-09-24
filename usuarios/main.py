@@ -1,6 +1,6 @@
 from flask import Flask
 import requests
-TOKEN ='12345'
+TOKEN =''
 
 
 app = Flask(__name__)
