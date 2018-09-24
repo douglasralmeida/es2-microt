@@ -25,7 +25,7 @@ def registrar():
   bio = request.args.get('bio')
   if bio is None:
     bio = 'NULL'
-  db.executarUm(conn, SQL_USUA_INSERIR, [apelido, nome, bio])
+  db.executar(conn, SQL_USUA_INSERIR, [apelido, nome, bio])
 
   return 'Usuário inserido com sucesso.'
 
