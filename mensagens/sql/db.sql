@@ -1,7 +1,11 @@
-CREATE SCHEMA mtmensagens
-  AUTHORIZATION ikjaragppwqzhb;
+-- host: ec2-54-235-94-36.compute-1.amazonaws.com
+-- db:   d37hqf7fkpac28
+-- user: qgasolxcrcraqz
 
-GRANT ALL ON SCHEMA mtmensagens TO ikjaragppwqzhb;
+CREATE SCHEMA mtmensagens
+  AUTHORIZATION qgasolxcrcraqz;
+
+GRANT ALL ON SCHEMA mtmensagens TO qgasolxcrcraqz;
 
 CREATE TABLE mtmensagens.mensagens (
   id_mensagem SERIAL PRIMARY KEY,

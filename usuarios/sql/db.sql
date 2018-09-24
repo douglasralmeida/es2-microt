@@ -1,7 +1,11 @@
-CREATE SCHEMA mtusuarios
-  AUTHORIZATION ikjaragppwqzhb;
+-- host: ec2-54-235-94-36.compute-1.amazonaws.com
+-- db:   d4e296v8gjgi52
+-- user: toyztzsfxflovv
 
-GRANT ALL ON SCHEMA mtusuarios TO ikjaragppwqzhb;
+CREATE SCHEMA mtusuarios
+  AUTHORIZATION toyztzsfxflovv;
+
+GRANT ALL ON SCHEMA mtusuarios TO toyztzsfxflovv;
 
 CREATE TABLE mtusuarios.usuarios (
   id_usuario SERIAL PRIMARY KEY,
