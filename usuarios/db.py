@@ -12,11 +12,20 @@ def executar(conn, sql, param):
       cur.execute(sql, param)
       cur.close()
 
-def retornar(conn, sql, param):
+def retornarUm(conn, sql, param):
   with conn:
     with conn.cursor() as cur:
       cur.execute(sql, param)
       valor = cur.fetchone()
+      cur.close()
+
+  return valor
+
+def retornarVarios(conn, sql, param):
+  with conn:
+    with conn.cursor() as cur:
+      cur.execute(sql, param)
+      valor = cur.fetchall()
       cur.close()
 
   return valor
