@@ -10,7 +10,7 @@ SQL_USUA_EXCLUIR = 'DELETE FROM mtusuarios.usuarios WHERE id_usuario = %s;'
 SQL_USUA_SEGUIR = 'INSERT INTO mtusuarios.seguindo (idseguidor, idseguindo) VALUES (%s, %s);'
 SQL_USUA_DEIXAR = 'DELETE FROM mtusuarios.seguindo WHERE mtusuarios.seguindo.idseguidor = %s AND mtusuarios.seguindo.idseguindo = %s;'
 SQL_USUA_EXIBIR_SEGUIDORES = 'SELECT id_usuario, apelido, nome FROM mtusuarios.usuarios LEFT JOIN mtusuarios.seguindo ON mtusuarios.usuarios.id_usuario = mtusuarios.seguindo.idseguindo WHERE mtusuarios.seguindo = %s ORDER BY apelido;'
-SQL_USUA_EXIBIR_SEGUIDOS = 'SELECT id_usuario, apelido, nome FROM mtusuarios.usuarios LEFT JOIN mtusuarios.seguindo ON mtusuarios.usuarios.id_usuario = mtusuarios.seguindo.idseguidor WHERE mtusuarios.seguidor = %s ORDER BY apelido;'
+SQL_USUA_EXIBIR_SEGUIDOS = 'SELECT id_usuario, apelido, nome FROM mtusuarios.usuarios LEFT JOIN mtusuarios.seguindo ON id_usuario = idseguidor WHERE idseguindo = %s ORDER BY apelido;'
 
 app = Flask(__name__)
 conn = db.conectar()
