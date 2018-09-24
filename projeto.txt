@@ -31,6 +31,7 @@ BD:
 
 URLS:
  url/msg/postar      - URL para postar uma mensagem
+   params: ?usuario=num&conteudo=texto
  url/msg/@id         - URL para recuperar a mensagem @id
  url/umsg/@usuario   - URL para recuperar as mensagens do usuário @usuario
 

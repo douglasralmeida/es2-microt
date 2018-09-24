@@ -23,3 +23,5 @@ CREATE TABLE mtusuarios.seguindo (
 
 INSERT INTO mtusuarios.usuarios (apelido, nome)  VALUES 
   ('usuarioteste', 'Usuário Teste');
+
+-- INSERT INTO mtusuarios.seguindo (idseguidor, idseguindo) VALUES (%d, %d);
