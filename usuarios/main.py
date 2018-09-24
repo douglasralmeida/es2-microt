@@ -13,4 +13,10 @@ def send_message()
 
 
 if __name__ == '__main__':
-  send_message()
+
+	id_usuario=0;
+	nome = input('Entre com o nome: ')
+	apelido =  = input('Entre com o apelido: ')
+	bio  = input('Entre com a bio: ')
+	id_usuario = ++id_usuario;
+	send_message()
