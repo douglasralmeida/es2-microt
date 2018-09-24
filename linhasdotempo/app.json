@@ -1,6 +1,6 @@
 {
   "name": "microT project",
-  "description": "m",
+  "description": "timeline",
   "image": "heroku/python",
   "repository": "https://github.com/douglasralmeida/es2-",
   "keywords": ["python", "microservice"]
