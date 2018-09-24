@@ -1,39 +1,41 @@
-from flask import Flask
-import requests
-TOKEN =''
+## Módulo Usuários do microT
 
+from flask import Flask
+import os
+import psycopg2 as psql
+
+DB_URL = os.environ['DATABASE_URL']
+SQL_USUA_INSERIR = 'SELECT nome FROM oscar.filmes WHERE ano = %s;'
+SQL_USUA_EXCLUIR = 'SELECT nome FROM oscar.filmes WHERE ano = %s;'
+SQL_USUA_SEGUIR = ''
+SQL_USUA_DEIXAR = ''
+SQL_USUA_EXIBIR_SEGUIDOS = ''
 
 app = Flask(__name__)
 
-def registrar()
-	url = '/usuario/registrar{0}/'.format(TOKEN)
-	data = {'apelido', 'nome', 'bio', 'id_usuario'}
-	response = requests.post(url, data = data)
+@app.route('/')
+def home():
+  return 'microT Users Microservice'
 
-def abandonar(id_usuario)
-	url = '/usuario/abandonar/@id_usuario{0}/'.format(TOKEN)
-	data = {id_usuario'}
-	response = requests.delete(url, data = data)
+@app.route("/usuario/registrar")
+def registrar():
+  return "Ação: INSERIR NO BD"
 
-def seguir(id_usuario)
-	url = '/usuario/seguir{0}/@id_usuario'.format(TOKEN)
-	data = {'id_usuario'}
-	response = requests.get(url, data = data)
+@app.route("/usuario/abandonar/<uid>")
+def abandonar(uid):
+  return "Ação: DELETAR UID DO BD"
 
-def deixar(id_usuario)
-	url = '/usuario/deixar{0}/@id_usuario'.format(TOKEN)
-	data = {'apelido', 'nome', 'bio', 'id_usuario'}
-	response = requests.get(url, data = data)
+@app.route("/usuario/seguir/<uid>")
+def seguir(uid):
+  return "Ação: SEGUIR UID"
 
+@app.route("/usuario/deixar/<uid>")
+def deixar(uid):
+  return "Ação: DEIXAR DE SEGUIR UID"
+
+@app.route("/usuario/seguidos/<uid>")
+def seguidos(uid):
+  return "Ação: EXIBIR SEGUIDOS DE UID"
 
 if __name__ == '__main__':
-
-	nome = input('Entre com o nome: ')
-	apelido =  = input('Entre com o apelido: ')
-	bio  = input('Entre com a bio: ')
-	id_usuario  = input('Entre com a id_usuario: ')
-	opcao  = input('Entre com a opcao: 1=registrar 2=abandonar 3 =seguir 4 =deixar')
-	if(opcao ==1)	registrar()
-	if(opcao ==2)	abandonar(id_usuario)
-	if(opcao ==3)	seguir(id_usuario)
-	if(opcao ==4)	deixar(id_usuario)
+  app.run(debug=True, use_reloader=True)
