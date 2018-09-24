@@ -21,7 +21,7 @@ def home():
 
 @app.route("/usuario/listar")
 def listar():
-  resultado = db.retornarVarios(conn, SQL_USUA_LISTAR)
+  resultado = db.retornarVarios(conn, SQL_USUA_LISTAR, [])
   
   return resultado
 
