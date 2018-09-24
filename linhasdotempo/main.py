@@ -23,14 +23,16 @@ def getListaUsuarios(uid):
   jsondata = downloadData(URL_SEGUIDOS % uid)
   data = json.load(jsondata)  
   for x in data:
-    lista.append(x.['id_usuario'])
+    lista.append(x['id_usuario'])
   return lista
 
 @app.route("/lt/<id>")
 def timelinetodos(id):
-  return getListaUsuarios(id)
-
-  #return "Ação: LISTAR MSGS DO USUARIO ID E DAQUELES QUE ELE SEGUE VIA HTTP"
+  data = downloadData(URL_MSG_BY_USER % id)
+  lista = getListaUsuarios(id)
+  for i in lista:
+    data.append = downloadData(URL_MSG_BY_USER % i)
+  return data
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
