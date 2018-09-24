@@ -17,6 +17,9 @@ def home():
 
 @app.route("/msg/postar")
 def postar():
+  usuario = request.args.get('uid')
+  conteudo = request.args.get('conteudo')
+
   return "Ação: INSERIR MSG NO BD"
 
 @app.route("/msg/<id>")

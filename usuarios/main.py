@@ -20,23 +20,31 @@ def home():
 
 @app.route("/usuario/registrar")
 def registrar():
+  apelido = request.args.get('apelido')
+  nome = request.args.get('nome')
+  bio = request.args.get('bio')
+
   return "Ação: INSERIR NO BD"
 
 @app.route("/usuario/abandonar/<uid>")
 def abandonar(uid):
   return "Ação: DELETAR UID DO BD"
 
-@app.route("/usuario/seguir/<uid>")
-def seguir(uid):
-  return "Ação: SEGUIR UID"
+@app.route("/usuario/seguir/<id>")
+def seguir(id):
+  usuario = request.args.get('uid')
 
-@app.route("/usuario/deixar/<uid>")
-def deixar(uid):
-  return "Ação: DEIXAR DE SEGUIR UID"
+  return "Ação: SEGUIR ID"
 
-@app.route("/usuario/seguidos/<uid>")
-def seguidos(uid):
-  return "Ação: EXIBIR SEGUIDOS DE UID"
+@app.route("/usuario/deixar/<id>")
+def deixar(id):
+  usuario = request.args.get('uid')
+
+  return "Ação: DEIXAR DE SEGUIR ID"
+
+@app.route("/usuario/seguidos/<id>")
+def seguidos(id):
+  return "Ação: EXIBIR SEGUIDOS DE ID"
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)

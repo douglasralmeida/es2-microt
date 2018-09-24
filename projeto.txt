@@ -16,9 +16,9 @@ URLS:
    params: ?apelido=texto&nome=texto&bio=texto
  url/usuario/abandonar/@id		- URL para remover o usuário @id
  url/usuario/seguir/@id			- URL para seguir usuário @id
-   params: ?usuario=uid
+   params: ?uid=num
  url/usuario/deixar/@id			- URL para deixar de seguir o usuário @id
-   params: ?usuario=uid
+   params: ?uid=num
  url/usuario/seguidos/@id		- URL para retornar aqueles que o usuário @id segue
 
 Módulo 2 - Mensagens
@@ -31,7 +31,7 @@ BD:
 
 URLS:
  url/msg/postar      - URL para postar uma mensagem
-   params: ?usuario=num&conteudo=texto
+   params: ?uid=num&conteudo=texto
  url/msg/@id         - URL para recuperar a mensagem @id
  url/umsg/@usuario   - URL para recuperar as mensagens do usuário @usuario
 
