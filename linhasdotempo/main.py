@@ -20,15 +20,16 @@ def downloadData(url):
 
 def getListaUsuarios(uid):
   lista = []
-  jsondata = downloadData(URL_SEGUIDOS % uid)
-  data = json.load(jsondata)  
+  jsondata = urlopen(URL_SEGUIDOS % uid)
+  data = json.load(jsondata)
   for x in data:
     lista.append(x['id_usuario'])
   return lista
 
 @app.route("/lt/<id>")
 def timelinetodos(id):
-  data = downloadData(URL_MSG_BY_USER % id)
+  jsondata = urlopen(URL_MSG_BY_USER % id)
+  data = json.load(jsondata)
   lista = getListaUsuarios(id)
   for i in lista:
     data.append = downloadData(URL_MSG_BY_USER % i)
