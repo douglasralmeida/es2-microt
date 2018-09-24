@@ -1,4 +1,7 @@
-CREATE SCHEMA mtusuarios;
+CREATE SCHEMA mtusuarios
+  AUTHORIZATION ikjaragppwqzhb;
+
+GRANT ALL ON SCHEMA mtusuarios TO ikjaragppwqzhb;
 
 CREATE TABLE mtusuarios.usuarios (
   id_usuario SERIAL PRIMARY KEY,
@@ -14,5 +17,5 @@ CREATE TABLE mtusuarios.seguindo (
   PRIMARY KEY (idseguidor, idseguindo)
 );
 
-INSERT INTO mtusuarios.seguindo (apelido, nome)  VALUES 
+INSERT INTO mtusuarios.usuarios (apelido, nome)  VALUES 
   ('usuarioteste', 'Usuário Teste');

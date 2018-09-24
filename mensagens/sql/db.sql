@@ -1,4 +1,7 @@
-CREATE SCHEMA mtmensagens;
+CREATE SCHEMA mtmensagens
+  AUTHORIZATION ikjaragppwqzhb;
+
+GRANT ALL ON SCHEMA mtmensagens TO ikjaragppwqzhb;
 
 CREATE TABLE mtmensagens.mensagens (
   id_mensagem SERIAL PRIMARY KEY,
