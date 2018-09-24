@@ -25,9 +25,9 @@ def registrar():
   bio = request.args.get('bio')
   if bio is None:
     bio = 'NULL'
-  db.executarUm(SQL_USUA_INSERIR, [apelido, nome, bio])
+  db.executarUm(conn, SQL_USUA_INSERIR, [apelido, nome, bio])
 
-  return "Ação: INSERIR NO BD"
+  return 'Usuário inserido com sucesso.'
 
 @app.route("/usuario/abandonar/<uid>")
 def abandonar(uid):

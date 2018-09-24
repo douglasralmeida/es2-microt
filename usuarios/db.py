@@ -6,10 +6,10 @@ DB_URL = os.environ['DATABASE_URL']
 def conectar():
   return psql.connect(DB_URL, sslmode='require')
 
-def executarUm(conn, sql):
+def executarUm(conn, sql, param):
   with conn:
     with conn.cursor() as cur:
-      cur.execute(sql)
+      cur.execute(sql, param)
       valor = cur.fetchone()
       cur.close()
 
