@@ -1,6 +1,7 @@
 ## Módulo Usuários do microT
 
 from flask import Flask
+from flask import request
 import db
 
 SQL_USUA_INSERIR = 'INSERT INTO mtusuarios.usuarios (apelido, nome, bio) VALUES (%s, %s, %s);'
