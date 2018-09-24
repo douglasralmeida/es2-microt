@@ -1,15 +1,16 @@
 ## Módulo Mensagens do microT
 
 from flask import Flask
+from flask import request
 import os
-import psycopg2 as psql
+import db
 
-DB_URL = os.environ['DATABASE_URL']
-SQL_MSG_INSERIR = 'INSERT INTO mtmensagens.mensagens (usuario, conteudo) VALUES (%d, %s);'
-SQL_MSG_RECUPERAR = 'SELECT usuario, conteudo FROM mtmensagens.mensagens WHERE id_mensagem = %d;'
-SQL_MSG_USUARIO = 'SELECT usuario, conteudo FROM mtmensagens.mensagens WHERE usuario = %d ORDER BY tempopostagem;'
+SQL_MSG_INSERIR = 'INSERT INTO mtmensagens.mensagens (usuario, conteudo) VALUES (%s, %s);'
+SQL_MSG_RECUPERAR = 'SELECT usuario, conteudo FROM mtmensagens.mensagens WHERE id_mensagem = %s;'
+SQL_MSG_USUARIO = 'SELECT usuario, conteudo FROM mtmensagens.mensagens WHERE usuario = %s ORDER BY tempopostagem;'
 
 app = Flask(__name__)
+conn = db.conectar()
 
 @app.route('/')
 def home():
@@ -20,15 +21,21 @@ def postar():
   usuario = request.args.get('uid')
   conteudo = request.args.get('conteudo')
 
-  return "Ação: INSERIR MSG NO BD"
+  db.executar(conn, SQL_MSG_INSERIR, [usuario, conteudo])
+
+  return "Mensagem inserida com sucesso."
 
 @app.route("/msg/<id>")
 def recuperar(id):
-  return "Ação: RECUPERAR MSG ID NO BD"
+  resultado = db.retornar(conn, SQL_MSG_RECUPERAR, [id])
+  
+  return resultado
 
 @app.route("/umsg/<uid>")
 def listar(uid):
-  return "Ação: LISTAR MSGS DO USUARIO UID NO BD"
+  resultado = db.retornar(conn, SQL_MSG_USUARIO, [uid])
+  
+  return resultado
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)
