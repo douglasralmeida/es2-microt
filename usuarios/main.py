@@ -22,6 +22,6 @@ if __name__ == '__main__':
 	apelido =  = input('Entre com o apelido: ')
 	bio  = input('Entre com a bio: ')
 	id_usuario  = input('Entre com a id_usuario: ')
-
-	cadastrar()
-	remover(id_usuario)
+	opcao  = input('Entre com a opcao: 1=cadastrar 2=descadastrar')
+	if(opcao ==1)	cadastrar()
+	if(opcao ==2)remover(id_usuario)
