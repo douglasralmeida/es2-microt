@@ -1,1 +1,1 @@
-web: gunicorn linhasdotempo/main:app
+web: gunicorn --chdir linhasdotempo main:app

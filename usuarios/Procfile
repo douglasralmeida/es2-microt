@@ -1,1 +1,1 @@
-web: gunicorn usuarios/main:app
+web: gunicorn --chdir usuarios main:app
