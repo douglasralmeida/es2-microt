@@ -14,9 +14,9 @@ def cadastrar()
 
 if __name__ == '__main__':
 
-	id_usuario=0;
 	nome = input('Entre com o nome: ')
 	apelido =  = input('Entre com o apelido: ')
 	bio  = input('Entre com a bio: ')
-	id_usuario = ++id_usuario;
+	id_usuario  = input('Entre com a id_usuario: ')
+
 	cadastrar()
