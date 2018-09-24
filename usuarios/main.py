@@ -1,10 +1,8 @@
 ## Módulo Usuários do microT
 
 from flask import Flask
-import os
-import psycopg2 as psql
+import db
 
-DB_URL = os.environ['DATABASE_URL']
 SQL_USUA_INSERIR = 'INSERT INTO mtusuarios.usuarios (apelido, nome, bio) VALUES (%s, %s, %s);'
 SQL_USUA_EXCLUIR = 'DELETE FROM mtusuarios.usuarios WHERE id_usuario = %d;'
 SQL_USUA_SEGUIR = 'INSERT INTO mtusuarios.seguindo (idseguidor, idseguindo) VALUES (%d, %d);'
@@ -13,6 +11,7 @@ SQL_USUA_EXIBIR_SEGUIDORES = 'SELECT id_usuario, apelido, nome FROM mtusuarios.u
 SQL_USUA_EXIBIR_SEGUIDOS = 'SELECT id_usuario, apelido, nome FROM mtusuarios.usuarios LEFT JOIN mtusuarios.seguindo ON usuarios.id_usuario = seguindo.idseguidor ORDER BY apelido;'
 
 app = Flask(__name__)
+conn = db.conectar()
 
 @app.route('/')
 def home():
@@ -23,6 +22,9 @@ def registrar():
   apelido = request.args.get('apelido')
   nome = request.args.get('nome')
   bio = request.args.get('bio')
+  if bio is None:
+    bio = 'NULL'
+  db.executarUm(SQL_USUA_INSERIR, [apelido, nome, bio])
 
   return "Ação: INSERIR NO BD"
 
