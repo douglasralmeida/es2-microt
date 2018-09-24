@@ -1,4 +1,5 @@
 import os
+import json
 import psycopg2 as psql
 
 DB_URL = os.environ['DATABASE_URL']
@@ -12,20 +13,11 @@ def executar(conn, sql, param):
       cur.execute(sql, param)
       cur.close()
 
-def retornarUm(conn, sql, param):
+def retornar(conn, sql, param):
   with conn:
     with conn.cursor() as cur:
       cur.execute(sql, param)
-      valor = cur.fetchone()
+      valor = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
       cur.close()
 
-  return valor
-
-def retornarVarios(conn, sql, param):
-  with conn:
-    with conn.cursor() as cur:
-      cur.execute(sql, param)
-      valor = cur.fetchall()
-      cur.close()
-
-  return valor
+  return json.dumps(valor)

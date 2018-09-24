@@ -21,7 +21,7 @@ def home():
 
 @app.route("/usuario/listar")
 def listar():
-  resultado = db.retornarVarios(conn, SQL_USUA_LISTAR, [])
+  resultado = db.retornar(conn, SQL_USUA_LISTAR, [])
   
   return resultado
 
@@ -58,7 +58,7 @@ def deixar(id):
 
 @app.route("/usuario/seguidos/<id>")
 def seguidos(id):
-  resultado = db.retornarVarios(conn, SQL_USUA_EXIBIR_SEGUIDOS, [id])
+  resultado = db.retornar(conn, SQL_USUA_EXIBIR_SEGUIDOS, [id])
   
   return resultado
 
