@@ -1,6 +1,7 @@
 ## Módulo Linha do Tempo do microT
 
 from flask import Flask
+from flask import jsonify
 from urllib.request import urlopen
 import os
 import json
@@ -33,7 +34,7 @@ def timelinetodos(id):
   lista = getListaUsuarios(id)
   for i in lista:
     data.append = downloadData(URL_MSG_BY_USER % i)
-  return data
+  return jsonify(lista)
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
