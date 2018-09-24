@@ -14,7 +14,7 @@ def home():
 
 def downloadData(url):
   response = urlopen(url)
-  return response
+  return response.read()
 
 @app.route("/lt/<id>")
 def timelinetodos(id):
