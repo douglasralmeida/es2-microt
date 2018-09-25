@@ -40,7 +40,7 @@ def timelinetodos(id):
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
-  return jsonify(downloadData(URL_MSG_BY_USER % id))
+  return jsonify(urlopen(URL_MSG_BY_USER % id))
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)
