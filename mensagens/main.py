@@ -2,7 +2,7 @@
 
 from flask import Flask
 from flask import request
-import os
+from flask import jsonify
 import db
 
 SQL_MSG_INSERIR = 'INSERT INTO mtmensagens.mensagens (usuario, conteudo) VALUES (%s, %s);'
@@ -29,13 +29,13 @@ def postar():
 def recuperar(id):
   resultado = db.retornar(conn, SQL_MSG_RECUPERAR, [id])
   
-  return resultado
+  return jsonify(resultado)
 
 @app.route("/umsg/<uid>")
 def listar(uid):
   resultado = db.retornar(conn, SQL_MSG_USUARIO, [uid])
   
-  return resultado
+  return jsonify(resultado)
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)

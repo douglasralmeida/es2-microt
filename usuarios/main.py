@@ -2,6 +2,7 @@
 
 from flask import Flask
 from flask import request
+from flask import jsonify
 import db
 
 SQL_USUA_LISTAR = 'SELECT id_usuario, apelido FROM mtusuarios.usuarios;'
@@ -23,7 +24,7 @@ def home():
 def listar():
   resultado = db.retornar(conn, SQL_USUA_LISTAR, [])
   
-  return resultado
+  return jsonify(resultado)
 
 @app.route("/usuario/registrar")
 def registrar():
@@ -60,13 +61,13 @@ def deixar(id):
 def seguidores(id):
   resultado = db.retornar(conn, SQL_USUA_EXIBIR_SEGUIDORES, [id])
   
-  return resultado
+  return jsonify(resultado)
 
 @app.route("/usuario/seguidos/<id>")
 def seguidos(id):
   resultado = db.retornar(conn, SQL_USUA_EXIBIR_SEGUIDOS, [id])
   
-  return resultado
+  return jsonify(resultado)
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)

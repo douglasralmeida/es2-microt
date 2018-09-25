@@ -3,7 +3,6 @@
 from flask import Flask
 from flask import jsonify
 from urllib.request import urlopen
-import os
 import json
 
 URL_MSG_BY_USER = 'https://mtmensagens.herokuapp.com/umsg/%s'
@@ -33,12 +32,15 @@ def timelinetodos(id):
   data = json.load(jsondata)
   lista = getListaUsuarios(id)
   for i in lista:
-    data.append(json.load(urlopen(URL_MSG_BY_USER % i)))
+    jsonmsgs = urlopen(URL_MSG_BY_USER % i)
+    msgs = json.load(jsonmsgs)
+    for j in msgs:
+      data.append(j)
   return jsonify(data)
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
-  return downloadData(URL_MSG_BY_USER % id)
+  return jsonify(downloadData(URL_MSG_BY_USER % id))
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)
