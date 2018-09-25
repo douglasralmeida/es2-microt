@@ -36,8 +36,9 @@ def timelinetodos(id):
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
-  data = urlopen(URL_MSG_BY_USER % id)
-  return data.read()
+  jsondata = urlopen(URL_MSG_BY_USER % id)
+  data = json.load(jsondata)
+  return jsonify(data)
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)
