@@ -14,10 +14,6 @@ app = Flask(__name__)
 def home():
   return 'microT Timeline Microservice'
 
-def downloadData(url):
-  response = urlopen(url)
-  return response.read()
-
 def getListaUsuarios(uid):
   lista = []
   jsondata = urlopen(URL_SEGUIDOS % uid)
@@ -40,7 +36,8 @@ def timelinetodos(id):
 
 @app.route("/lt/usuario/<id>")
 def timeline(id):
-  return jsonify(urlopen(URL_MSG_BY_USER % id))
+  data = urlopen(URL_MSG_BY_USER % id)
+  return data.read()
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)
