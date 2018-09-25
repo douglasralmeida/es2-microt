@@ -1,5 +1,4 @@
 import os
-import json
 import psycopg2 as psql
 
 DB_URL = os.environ['DATABASE_URL']
@@ -20,4 +19,4 @@ def retornar(conn, sql, param):
       valor = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
       cur.close()
 
-  return json.dumps(valor)
+  return valor
