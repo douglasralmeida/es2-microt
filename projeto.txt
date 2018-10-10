@@ -12,6 +12,8 @@ BD:
   PK(idseguidor, idseguido)
 
 URLS:
+ url/usuario/verificar/@apelido		- URL para checar se o usuário @apelido existe.
+
  url/usuario/registrar			- URL para cadastrar usuario
    params: ?apelido=texto&nome=texto&bio=texto
  url/usuario/abandonar/@id		- URL para remover o usuário @id

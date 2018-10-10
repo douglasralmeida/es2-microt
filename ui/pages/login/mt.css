@@ -131,3 +131,7 @@ button, input[type='button'], input[type='submit'], input[type='reset'] {
     border-color: transparent;
     background-color: rgba(0, 0, 0, 0.2);
 }
+
+fieldset {
+    border-width: 0px;
+}
