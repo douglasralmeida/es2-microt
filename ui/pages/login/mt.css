@@ -1,4 +1,4 @@
-@keyframes fadeIn {
+@keyframes aparecer {
     from {opacity:0} to {opacity:1}
 }
 
@@ -14,7 +14,10 @@ body {
     font-size: 0.93rem;
     line-height: 1.25rem;
     color: #262626;
-    text-align: left;
+}
+
+.alerta {
+    color: #e81123;
 }
 
 .planodefundo, .planodefundo > div {
@@ -24,7 +27,7 @@ body {
     left: 0px;
     width: 100%;
     height: 100%;
-    animation: fadeIn 1s;    
+    animation: aparecer 1s;
 }
 
 .planodefundo > div {
@@ -45,7 +48,16 @@ body {
     vertical-align: middle;
 }
 
-.painellogin {
+.controle-form {
+    width: 100%;
+    background-image: none;
+}
+
+.linha {
+    margin-top: 16px;
+}
+
+.painel-login {
     min-width: 320px;
     min-height: 338px;
     border: 1px solid rgba(0,0,0,.4);
@@ -58,4 +70,64 @@ body {
     position: relative;
     margin-left: auto;
     margin-right: auto;
+}
+
+.rodape {
+    bottom: 24px;
+    right:24px;
+    position: absolute;
+    text-align: right;
+}
+
+.texto-titulo {
+    color: #404040;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    font-family: "Segoe UI","Helvetica Neue","Lucida Grande","Roboto","Ebrima","Nirmala UI","Gadugi","Segoe Xbox Symbol","Segoe UI Symbol","Meiryo UI","Khmer UI","Tunga","Lao UI","Raavi","Iskoola Pota","Latha","Leelawadee","Microsoft YaHei UI","Microsoft JhengHei UI","Malgun Gothic","Estrangelo Edessa","Microsoft Himalaya","Microsoft New Tai Lue","Microsoft PhagsPa","Microsoft Tai Le","Microsoft Yi Baiti","Mongolian Baiti","MV Boli","Myanmar Text","Cambria Math";
+}
+
+input[type="email"]:focus, input:focus {
+    border-color: #0067b8;
+}
+
+input[type="email"], input {
+    border-color: rgba(0,0,0,.6);
+    border-width: 0!important;
+    border-bottom-width: 1px!important;
+    padding: 6px 10px;
+    padding-left: 0px;
+    border-radius: 0;
+    height: 36px;
+    outline: none;
+}
+
+input {
+    font-size: 15px;
+    margin: 0;
+    max-width: 100%;
+}
+
+button, input[type='button'], input[type='submit'], input[type='reset'] {
+    display: inline-block;
+    cursor: pointer;
+    min-width: 100px;
+    padding: 4px 12px 4px 12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    position: relative;
+    max-width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    touch-action: manipulation;
+    color: #000;
+    border-style: solid;
+    border-width: 2px;
+    border-color: transparent;
+    background-color: rgba(0, 0, 0, 0.2);
 }

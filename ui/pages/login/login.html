@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="PT-BR" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes" />
+        <link href="favicon.ico" rel="shortcut icon">
+        <link title="CSS UI" href="mt.css" rel="stylesheet" type="text/css">
+        <script type='text/javascript' src='http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js'></script>
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="planodefundo">
+            <div style='background-image: url("fundo.jpg");'></div>
+        </div>
+        <form name="form1" spellcheck="false" data-bind="submit: submeterDados">
+            <div class="container">
+                <div class="celula">
+                    <div class="painel-login">
+                        <div class="caderno">
+                            <div class="texto-titulo">Login</div>
+                            <div role="alert">
+                                <div class="alerta" data-bind='visible: apelidoVazio'>
+                                    Insira seu apelido antes de conectar.
+                                </div>
+                            </div>
+                            <input name="loginfmt" class="controle-form" aria-label="Insira seu apelido" maxlength="20" placeholder="Apelido" data-bind="value: apelido">
+                            <div class="linha">
+                                <a href="">Cadastrar na rede social</a>
+                            </div>
+                            <div class="rodape">
+                                <button type="submit">Conectar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script type='text/javascript' src='login.js'></script>
+    </body>
+</html>
