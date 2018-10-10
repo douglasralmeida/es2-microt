@@ -18,19 +18,33 @@
                 <div class="celula">
                     <div class="painel-login">
                         <div class="caderno">
-                            <div class="texto-titulo">Login</div>
-                            <div role="alert">
-                                <div class="alerta" data-bind='visible: apelidoVazio'>
-                                    Insira seu apelido antes de conectar.
+                            <fieldset>
+                                <div class="texto-titulo">Login</div>
+                                <div role="alert">
+                                    <div class="alerta" data-bind='visible: apelidoVazio'>
+                                        Insira seu apelido antes de conectar.
+                                    </div>
                                 </div>
-                            </div>
-                            <input name="loginfmt" class="controle-form" aria-label="Insira seu apelido" maxlength="20" placeholder="Apelido" data-bind="value: apelido">
-                            <div class="linha">
-                                <a href="">Cadastrar na rede social</a>
-                            </div>
-                            <div class="rodape">
-                                <button type="submit">Conectar</button>
-                            </div>
+                                <input name="loginfmt" class="controle-form" aria-label="Insira seu apelido" maxlength="20" placeholder="Apelido" data-bind="value: apelido">
+                                <div class="linha">
+                                    <a href="">Cadastrar na rede social</a>
+                                </div>
+                                <div class="rodape">
+                                    <button type="submit">Conectar</button>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="texto-titulo">Cadastrar</div>
+                                <div role="alert">
+                                    <div class="alerta" data-bind='visible: apelidoJaExiste'>
+                                        Este apelido já existe. Escolha outroa antes de continuar.
+                                    </div>
+                                </div>
+                                <input class="controle-form" aria-label="Crie um apelido" maxlength="20" placeholder="Apelido" data-bind="value: apelido">
+                                <div class="rodape">
+                                    <button type="submit">Continuar</button>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
