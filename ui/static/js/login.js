@@ -10,12 +10,11 @@ ko.validation.init({
 
 ko.validation.rules['nomeJaUtilizado'] = {
     validator: function (val) { 
-        var eUnico = true;
+        var eUnico = false;
 
         $.get('https://mtusuarios.herokuapp.com/usuario/verificar/'+val)
           .done(function(data) {
-            console.log(data);
-            eUnico = data.quantidade === 0;
+            eUnico = (data.quantidade === 0);
         });
         
         return eUnico;
