@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes" />
         <link href="favicon.ico" rel="shortcut icon">
         <link title="CSS UI" href="mt.css" rel="stylesheet" type="text/css">
+        <script type='text/javascript' src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js'></script>
         <script type='text/javascript' src='http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js'></script>
         <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.3/knockout.validation.min.js'></script>
         <title>Login</title>
@@ -14,7 +15,7 @@
         <div class="planodefundo">
             <div style='background-image: url("fundo.jpg");'></div>
         </div>
-        <form name="form1" spellcheck="false" data-bind="submit: submeterDados">
+        <form name="form1" spellcheck="false">
             <div class="container">
                 <div class="celula">
                     <div class="painel-login">
@@ -22,16 +23,14 @@
                             <fieldset data-bind="visible: formAtual() === 1">
                                 <div class="texto-titulo">Login</div>
                                 <div role="alert">
-                                    <div class="alerta" data-bind='visible: apelidoVazio'>
-                                        Insira seu apelido antes de conectar.
-                                    </div>
+                                    <div class="alerta" data-bind='validationMessage: apelido'></div>
                                 </div>
                                 <input class="controle-form" aria-label="Insira seu apelido" maxlength="20" placeholder="Apelido" data-bind="value: apelido">
                                 <div class="linha">
                                     <a href="#" data-bind="click: cadastrar">Cadastrar na rede social</a>
                                 </div>
                                 <div class="rodape">
-                                    <button type="submit">Conectar</button>
+                                    <button data-bind="click: logar">Conectar</button>
                                 </div>
                             </fieldset>
                             <fieldset data-bind="visible: formAtual() === 2">
@@ -39,7 +38,7 @@
                                 <div role="alert">
                                     <div class="alerta" data-bind='validationMessage: novoApelido'></div>
                                 </div>
-                                <input class="controle-form" aria-label="Crie um apelido" maxlength="20" placeholder="Apelido" data-bind="value: novoApelido" required>
+                                <input class="controle-form" aria-label="Crie um apelido" maxlength="20" placeholder="Apelido" data-bind="value: novoApelido, disable: novoApelido.isValidating()">
                                 <div class="rodape">
                                     <button data-bind="click: voltar">Voltar</button>
                                     <button data-bind="click: continuar">Continuar</button>                                    
@@ -48,9 +47,7 @@
                             <fieldset data-bind="visible: formAtual() === 3">
                                 <div class="texto-titulo">Dados Pessoais</div>
                                 <div role="alert">
-                                    <div class="alerta" data-bind='visible: nomeVazio'>
-                                        Digite seu nome completo antes de continuar.
-                                    </div>
+                                    <div class="alerta" data-bind='validationMessage: nome'></div>
                                 </div>
                                 <input class="controle-form" aria-label="Insira seu nome" maxlength="20" placeholder="Nome Completo" data-bind="value: nome">
                                 <input class="controle-form" aria-label="Insira uma pequena biografia" maxlength="20" placeholder="Biografia" data-bind="value: bio">

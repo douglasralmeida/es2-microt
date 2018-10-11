@@ -4,21 +4,21 @@ ko.validation.init({
     insertMessages: false,
     decorateInputElement: true,
     writeInputAttributes: true,
-    errorElementClass: "erro"
+    errorElementClass: "erro",
+    messagesOnModified: true
 });
 
 ko.validation.rules['nomeJaUtilizado'] = {
-    async: true,
-    validator: function ( val, parms, callback ) { 
-        var defaults = {
-            url: '/usuario/verificar/'+val,
-            type: 'POST',
-            success: function(data) {
-              callback(true);
-            }
-        }
-        var options = $.extend( defaults, parms );
-        $.ajax(options);
+    validator: function (val) { 
+        var eUnico = true;
+
+        $.get('http://mtusuarios.herokuapp.com/usuario/verificar/'+val)
+          .done(function(data) {
+            console.log(data);
+            eUnico = data.quantidade === 0;
+        });
+        
+        return eUnico;
     },
     message: 'O apelido informado já está sendo utilizado. Informe outro.'
 };
@@ -29,15 +29,19 @@ function AppViewModel() {
     var self = this;
 
     //inicializar objetos observáveis
-    self.apelido = ko.observable("");
+    self.apelido = ko.observable("").extend({
+        required: {params: true, message: "Insira seu apelido antes de conectar."}
+    });
     self.apelidoJaExiste = ko.observable(false);
-    self.apelidoVazio = ko.observable(false);
     self.bio = ko.observable("");
-    self.estaConectando = ko.observable(false);
-    self.nome = ko.observable("");
-    self.nomeVazio = ko.observable(false);
+    self.estaProcessando = ko.observable(false);
+    self.nome = ko.observable("").extend({
+        required: {params: true, message: "Digite seu nome completo antes de continuar."}
+    })
     self.novoApelido = ko.observable("").extend({
-        required: {params: true, message: "Insira um novo apelido antes de continuar."}});
+        required: {params: true, message: "Insira um novo apelido antes de continuar."},
+        nomeJaUtilizado: {data: self}
+    });
 
     //inicializar validadores de objetos observáveis
     //form1 = formulário de login
@@ -63,38 +67,45 @@ function AppViewModel() {
     self.continuar = function() {
         if (self.formAtual() < 3)
             self.alterarform(self.formAtual() + 1);
-        return false;
     }
     self.voltar = function() {
         if (self.formAtual() > 1)
             self.alterarform(self.formAtual() - 1);
     }
     self.cadastrar = function() {
-        self.alterarform(2);
+        self.formAtual(2);
     }
     self.finalizar = function() {
-        alert("TODO: Cadastar usuário e Ir para TimeLine");
+        var validationObservable = "form" + self.formAtual();
+        if (self[validationObservable].isValid()) {
+            alert("TODO: Cadastar usuário e Ir para TimeLine");
+        } else {
+            self[validationObservable].errors.showAllMessages();
+            return false;
+        }
     }
     self.alterarform = function(proxform) {
         var validationObservable = "form" + self.formAtual();
         if (self[validationObservable].isValid()) {
             self.formAtual(proxform);
             return true;
+        } else {
+            self[validationObservable].errors.showAllMessages();
+            return false;
         }
     }
 
     //logar no aplicativo
-    this.submeterDados = function() {
-        var usuario = self.apelido();
-        if (usuario.length == 0) {
-          self.apelidoVazio(true);
-          return false;
+    this.logar = function() {
+        var validationObservable = "form" + self.formAtual();
+        if (self[validationObservable].isValid()) {
+            alert("TODO: Logar");
+        } else {
+            self[validationObservable].errors.showAllMessages();
+            return false;
         }
-        self.apelidoVazio(false);
     };
 };
 
 // Ativar knockout.js
 ko.applyBindings(new AppViewModel());
-
-//<input class="botao" type="submit" value="Conectar" data-bind="click: efetuarLogin">
