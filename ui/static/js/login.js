@@ -6,7 +6,7 @@ function verificarApelido(apelido) {
         req.open('GET', 'https://mtusuarios.herokuapp.com/usuario/verificar/'+apelido);
         req.onload = function() {
             if (req.status == 200) {
-                resolve(req.data.quantidade === 0)
+                resolve(req.response.data.quantidade === 0)
             } else {
                 reject(Error(req.statusText));
             };
