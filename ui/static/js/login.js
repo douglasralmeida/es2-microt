@@ -1,5 +1,19 @@
 /* Login Page View-model */
 
+function verificarApelido(apelido) {
+    return new Promise(function(res, rej) {
+        var req = new XMLHttpRequest();
+        req.open('GET', 'https://mtusuarios.herokuapp.com/usuario/verificar/'+apelido);
+        req.onload = function() {
+            if (req.status == 200) {
+                resolve(req.data.quantidade === 0)
+            } else {
+                reject(Error(req.statusText));
+            };
+        };
+    });
+};
+
 ko.validation.init({
     insertMessages: false,
     decorateInputElement: true,
@@ -10,14 +24,12 @@ ko.validation.init({
 
 ko.validation.rules['nomeJaUtilizado'] = {
     validator: function (val) { 
-        var eUnico = false;
-
-        $.get('https://mtusuarios.herokuapp.com/usuario/verificar/'+val)
-          .done(function(data) {
-            eUnico = (data.quantidade === 0);
+        verificarApelido(val).then(function(res) {
+            return res;
+        }, function(err) {
+            console.error("Falha na verficiação de apelido.", err);
+            return false;
         });
-        
-        return eUnico;
     },
     message: 'O apelido informado já está sendo utilizado. Informe outro.'
 };
