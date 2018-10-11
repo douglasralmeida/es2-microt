@@ -6,7 +6,8 @@ function get(url) {
         req.open('GET', url);
         req.onload = function() {
             if (req.status == 200) {
-                res(req.response.data.quantidade === 0)
+                var data = JSON.parse(req.responseText)
+                res(data.quantidade === 0)
             } else {
                 rej(Error(req.statusText));
             };
