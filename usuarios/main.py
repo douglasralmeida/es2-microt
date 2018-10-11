@@ -32,7 +32,7 @@ def home():
 @app.route("/usuario/getid/<apelido>")
 def getid(apelido):
   id = db.retornar(conn, SQL_USUA_ID, [apelido])[0]
-  resultado = {'id': id}
+  resultado = {'data': id}
 
   return jsonify(resultado)
 
