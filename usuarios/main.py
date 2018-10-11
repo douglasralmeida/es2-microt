@@ -5,6 +5,7 @@ from flask import request
 from flask import jsonify
 import db
 
+SQL_USUA_ID = 'SELECT id_usuario FROM mtusuarios.usuarios WHERE apelido = %s;'
 SQL_USUA_CHECAR = 'SELECT COUNT(id_usuario) FROM mtusuarios.usuarios WHERE apelido = %s;'
 SQL_USUA_LISTAR = 'SELECT id_usuario, apelido FROM mtusuarios.usuarios;'
 SQL_USUA_INSERIR = 'INSERT INTO mtusuarios.usuarios (apelido, nome, bio) VALUES (%s, %s, %s);'
@@ -27,6 +28,13 @@ def after_request(response):
 @app.route('/')
 def home():
   return 'microT Users Microservice'
+
+@app.route("/usuario/getid/<apelido>")
+def getid(apelido):
+  id = db.retornar(conn, SQL_USUA_ID, [apelido])[0]
+  resultado = {'id': id}
+
+  return jsonify(resultado)
 
 @app.route("/usuario/listar")
 def listar():
