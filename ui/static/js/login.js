@@ -1,13 +1,27 @@
 /* Login Page View-model */
 
-function get(url) {
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function paramtoget(params) {
+    return "?" + Object
+        .keys(params)
+        .map(function(key) {
+            return key+"="+encodeURIComponent(params[key])
+        }).join("&");
+};
+
+function httpget(url) {
     return new Promise(function(res, rej) {
         var req = new XMLHttpRequest();
         req.open('GET', url);
         req.onload = function() {
             if (req.status == 200) {
-                var data = JSON.parse(req.responseText)
-                res(data.quantidade === 0)
+                res(req.responseText)
             } else {
                 rej(Error(req.statusText));
             };
@@ -19,6 +33,45 @@ function get(url) {
     });
 };
 
+function checarexistencia(url) {
+    return new Promise(function(res, rej) {
+        httpget(url).then(function(resp) {
+            var data = JSON.parse(resp);
+            res(data.quantidade === 0);
+        }), function(err) {
+            rej(err);
+        }
+    });
+};
+
+function promiseTrue(param){
+    return new Promise(function(res, rej) {
+        res();
+    });
+};
+
+function cadastrarUsuario(apelido, nome, bio) {
+    var params = {
+        apelido: apelido,
+        nome: nome,
+        bio: bio
+    };
+    var url = 'https://mtusuarios.herokuapp.com/usuario/registrar' + paramtoget(params);
+
+    return new Promise(function(res, rej) {
+        httpget(url).then(function() {
+            res();
+        }), function(err) {
+            console.error("Falha no cadastro de usuário.", err);
+            rej();
+        }
+    });
+}
+
+function logarUsuario(apelido) {
+    return true;
+}
+
 ko.validation.init({
     insertMessages: false,
     decorateInputElement: true,
@@ -28,15 +81,29 @@ ko.validation.init({
 });
 
 ko.validation.rules['nomeJaUtilizado'] = {
-    validator: function (val) { 
-        get('https://mtusuarios.herokuapp.com/usuario/verificar/'+val).then(function(res) {
-            return res;
+    async: true,
+    validator: function (val, param, callback) {
+        checarexistencia('https://mtusuarios.herokuapp.com/usuario/verificar/'+val).then(function(res) {
+            callback(res);
         }, function(err) {
             console.error("Falha na verficiação de apelido.", err);
-            return false;
+            callback(false);
         });
     },
     message: 'O apelido informado já está sendo utilizado. Informe outro.'
+};
+
+ko.validation.rules['apelidoNaoExiste'] = {
+    async: true,
+    validator: function (val, param, callback) {
+        checarexistencia('https://mtusuarios.herokuapp.com/usuario/verificar/'+val).then(function(res) {
+            callback(!res);
+        }, function(err) {
+            console.error("Falha na verficiação de apelido.", err);
+            callback(false);
+        });
+    },
+    message: 'O apelido informado não existe. Informe outro.'
 };
 
 ko.validation.registerExtenders();
@@ -46,18 +113,19 @@ function AppViewModel() {
 
     //inicializar objetos observáveis
     self.apelido = ko.observable("").extend({
-        required: {params: true, message: "Insira seu apelido antes de conectar."}
+        required: {params: true, message: "Insira seu apelido antes de conectar."},
+        apelidoNaoExiste: {data: self}
     });
-    self.apelidoJaExiste = ko.observable(false);
     self.bio = ko.observable("");
     self.estaProcessando = ko.observable(false);
     self.nome = ko.observable("").extend({
         required: {params: true, message: "Digite seu nome completo antes de continuar."}
-    })
+    });
     self.novoApelido = ko.observable("").extend({
         required: {params: true, message: "Insira um novo apelido antes de continuar."},
         nomeJaUtilizado: {data: self}
     });
+    self.novoApelidoProcessando = ko.observable(false);
 
     //inicializar validadores de objetos observáveis
     //form1 = formulário de login
@@ -94,7 +162,14 @@ function AppViewModel() {
     self.finalizar = function() {
         var validationObservable = "form" + self.formAtual();
         if (self[validationObservable].isValid()) {
-            alert("TODO: Cadastar usuário e Ir para TimeLine");
+            var novoApelido = self.novoApelido();
+            var bio = self.bio();
+            var nome = self.nome();
+
+            cadastrarUsuario(novoApelido, nome, bio).then(function(){
+                setCookie('apelido', novoApelido, 1);
+                window.location.replace('/feed');
+            });
         } else {
             self[validationObservable].errors.showAllMessages();
             return false;
@@ -115,7 +190,11 @@ function AppViewModel() {
     this.logar = function() {
         var validationObservable = "form" + self.formAtual();
         if (self[validationObservable].isValid()) {
-            alert("TODO: Logar");
+            var apelido = self.apelido();
+            if (logarUsuario(apelido)) {
+                setCookie('apelido', apelido, 1);
+                window.location.replace('/feed');
+            }
         } else {
             self[validationObservable].errors.showAllMessages();
             return false;
