@@ -1,16 +1,20 @@
 /* Login Page View-model */
 
-function verificarApelido(apelido) {
+function get(url) {
     return new Promise(function(res, rej) {
         var req = new XMLHttpRequest();
-        req.open('GET', 'https://mtusuarios.herokuapp.com/usuario/verificar/'+apelido);
+        req.open('GET', url);
         req.onload = function() {
             if (req.status == 200) {
-                resolve(req.response.data.quantidade === 0)
+                res(req.response.data.quantidade === 0)
             } else {
-                reject(Error(req.statusText));
+                rej(Error(req.statusText));
             };
         };
+        req.onerror = function() {
+            rej(Error('Erro de rede'));
+        }
+        req.send();
     });
 };
 
@@ -24,7 +28,7 @@ ko.validation.init({
 
 ko.validation.rules['nomeJaUtilizado'] = {
     validator: function (val) { 
-        verificarApelido(val).then(function(res) {
+        get('https://mtusuarios.herokuapp.com/usuario/verificar/'+val).then(function(res) {
             return res;
         }, function(err) {
             console.error("Falha na verficiação de apelido.", err);
