@@ -5,7 +5,7 @@ from flask import request
 from flask import jsonify
 import db
 
-SQL_USUA_CHECAR = 'SELECT COUNT(id_usuario) FROM tusuarios.usuarios WHERE apelido = %s;'
+SQL_USUA_CHECAR = 'SELECT COUNT(id_usuario) FROM mtusuarios.usuarios WHERE apelido = %s;'
 SQL_USUA_LISTAR = 'SELECT id_usuario, apelido FROM mtusuarios.usuarios;'
 SQL_USUA_INSERIR = 'INSERT INTO mtusuarios.usuarios (apelido, nome, bio) VALUES (%s, %s, %s);'
 SQL_USUA_EXCLUIR = 'DELETE FROM mtusuarios.usuarios WHERE id_usuario = %s;'
