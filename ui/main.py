@@ -26,11 +26,9 @@ def login():
 @app.route('/feed')
 def feed():
   apelido = request.cookies.get('apelido')
-  uid = getUserIdByApelido(apelido)
-
   if apelido is None:
     return login()
-
+  uid = getUserIdByApelido(apelido)
   resp = make_response(render_template('feed.html'))
   resp.set_cookie('uid', str(uid))
 

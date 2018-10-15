@@ -111,6 +111,7 @@ li a:hover {
 .painel-lateral {
     float: left;
     width: 300px;
+    margin-top: 15px;
 }
 
 .painel-central {
@@ -132,6 +133,7 @@ li a:hover {
 .feed-item {
     background: #fff;
     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.15), 0px 2px 3px rgba(0,0,0,0.2);
+    list-style: none;
     margin: 0 5px 8px;
     padding: 0;
     transition: box-shadow 83ms;

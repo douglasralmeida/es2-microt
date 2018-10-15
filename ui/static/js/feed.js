@@ -34,14 +34,6 @@ function httpget(url) {
     });
 };
 
-ko.validation.init({
-    insertMessages: false,
-    decorateInputElement: true,
-    writeInputAttributes: true,
-    errorElementClass: "erro",
-    messagesOnModified: true
-});
-
 function obterFeedGeral(uid) {
     var url = 'https://mtlt.herokuapp.com/lt/' + uid;
 
@@ -55,13 +47,38 @@ function obterFeedGeral(uid) {
     });
 }
 
+function baixarPosts(id) {
+    return new Promise(function(res, rej) {
+        var url = '';
+        var data = [{"conteudo":"Uma mensagem qualquer1","usuario":4},
+                    {"conteudo":"Uma mensagem qualquer2","usuario":5}];
+        res(data);
+    });
+}
+
+ko.validation.init({
+    insertMessages: false,
+    decorateInputElement: true,
+    writeInputAttributes: true,
+    errorElementClass: "erro",
+    messagesOnModified: true
+});
+
 function AppViewModel() {
     var self = this;
 
     //inicializar objetos observáveis
-    //this.TodosPosts = ko.observableArray();
-    this.todosPosts = ko.observableArray([{"conteudo":"Uma mensagem qualquer1","usuario":4}]);
+    self.todosPosts = ko.observableArray([]);
+    self.usuarioNome = ko.observable('Nome Usuario');
 
+    self.atualizarPosts = function() {
+        self.todosPosts([]);
+        baixarPosts(0).then(function(data) {
+            self.todosPosts(data);
+        });
+    }
+
+    self.atualizarPosts();
 };
 
 // Ativar knockout.js

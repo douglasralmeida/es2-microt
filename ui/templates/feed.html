@@ -17,29 +17,27 @@
         </div>
         <header>
             <ul class="menu">
+                <li><a href="#">Início</a></li>
                 <li><a href="#">Excluir perfil</a></li>
                 <li><a href="#">Sair</a></li>   
             </ul>
         </header>
         <div class="feed-container">
             <aside class="painel-lateral">
-                <div class="profile-item">
-                    Nome Usuário
-                </div>
+                <div class="profile-item" data-bind="text: usuarioNome"></div>
             </aside>
-                <div class="painel-central">
-                    <ol class="feed-stream" data-bind="foreach: todosPosts">
-                        <li class="feed-item">
-                            <span data-bind="text: conteudo"></span>
-                        </li>
-                    </ol>
-                </div>
+            <div class="painel-central">
+                <ul class="feed-stream" data-bind="foreach: todosPosts">
+                    <li class="feed-item">
+                        <span data-bind="text: conteudo"></span>
+                    </li>
+                </ul>
             </div>
-            <form name="form1" spellcheck="false">
-                <div class="container">
-                </div>
-            </form>
         </div>
+        <form name="form1" spellcheck="false">
+            <div class="container">
+            </div>
+        </form>
         <script type='text/javascript' src='static/js/feed.js'></script>
     </body>
 </html>
