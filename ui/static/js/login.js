@@ -15,24 +15,6 @@ function paramtoget(params) {
         }).join("&");
 };
 
-function httpget(url) {
-    return new Promise(function(res, rej) {
-        var req = new XMLHttpRequest();
-        req.open('GET', url);
-        req.onload = function() {
-            if (req.status == 200) {
-                res(req.responseText)
-            } else {
-                rej(Error(req.statusText));
-            };
-        };
-        req.onerror = function() {
-            rej(Error('Erro de rede'));
-        }
-        req.send();
-    });
-};
-
 function checarexistencia(url) {
     return new Promise(function(res, rej) {
         httpget(url).then(function(resp) {
@@ -83,7 +65,7 @@ ko.validation.init({
 ko.validation.rules['nomeJaUtilizado'] = {
     async: true,
     validator: function (val, param, callback) {
-        checarexistencia('https://mtusuarios.herokuapp.com/usuario/verificar/'+val).then(function(res) {
+        checarApelido(val).then(function(res) {
             callback(res);
         }, function(err) {
             console.error("Falha na verficiação de apelido.", err);
@@ -96,7 +78,7 @@ ko.validation.rules['nomeJaUtilizado'] = {
 ko.validation.rules['apelidoNaoExiste'] = {
     async: true,
     validator: function (val, param, callback) {
-        checarexistencia('https://mtusuarios.herokuapp.com/usuario/verificar/'+val).then(function(res) {
+        checarApelido(val).then(function(res) {
             callback(!res);
         }, function(err) {
             console.error("Falha na verficiação de apelido.", err);
@@ -155,10 +137,7 @@ function AppViewModel() {
     self.voltar = function() {
         if (self.formAtual() > 1)
             self.alterarform(self.formAtual() - 1);
-    }
-    self.cadastrar = function() {
-        self.formAtual(2);
-    }
+    }    
     self.finalizar = function() {
         var validationObservable = "form" + self.formAtual();
         if (self[validationObservable].isValid()) {
@@ -185,16 +164,19 @@ function AppViewModel() {
             return false;
         }
     }
+    self.cadastrar = function() {
+        self.formAtual(2);
+    }
 
     //logar no aplicativo
     this.logar = function() {
         var validationObservable = "form" + self.formAtual();
         if (self[validationObservable].isValid()) {
-            var apelido = self.apelido();
-            if (logarUsuario(apelido)) {
-                setCookie('apelido', apelido, 1);
-                window.location.replace('/feed');
-            }
+            credencial = Credencial(self.apelido());
+            entrarSistema(credencial).then(function() {
+              request();
+              window.location.replace('/feed');
+            });
         } else {
             self[validationObservable].errors.showAllMessages();
             return false;
