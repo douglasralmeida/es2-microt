@@ -11,6 +11,7 @@ SQL_USUA_LISTAR = 'SELECT id_usuario, apelido FROM mtusuarios.usuarios;'
 SQL_USUA_INSERIR = 'INSERT INTO mtusuarios.usuarios (apelido, nome, bio) VALUES (%s, %s, %s);'
 SQL_USUA_EXCLUIR = 'DELETE FROM mtusuarios.usuarios WHERE id_usuario = %s;'
 SQL_USUA_SEGUIR = 'INSERT INTO mtusuarios.seguindo (idseguidor, idseguindo) VALUES (%s, %s);'
+SQL_USUA_INFO = 'SELECT apelido, nome, bio FROM mtusuarios.usuarios WHERE id_usuario = %s;'
 SQL_USUA_DEIXAR = 'DELETE FROM mtusuarios.seguindo WHERE mtusuarios.seguindo.idseguidor = %s AND mtusuarios.seguindo.idseguindo = %s;'
 SQL_USUA_EXIBIR_SEGUIDOS = 'SELECT id_usuario, apelido, nome FROM mtusuarios.usuarios LEFT JOIN mtusuarios.seguindo ON id_usuario = idseguindo WHERE idseguidor = %s ORDER BY apelido;'
 SQL_USUA_EXIBIR_SEGUIDORES = 'SELECT id_usuario, apelido, nome FROM mtusuarios.usuarios LEFT JOIN mtusuarios.seguindo ON id_usuario = idseguidor WHERE idseguindo = %s ORDER BY apelido;'
@@ -73,6 +74,12 @@ def deixar(id):
 
   return 'Registro para deixar de seguir salvo com sucesso.'
 
+@app.route("/usuario/info/<uid>")
+def info(uid):
+  resultado = db.retornar(conn, SQL_USUA_INFO, [uid])[0]
+
+  return jsonify(resultado)
+
 @app.route("/usuario/seguidores/<id>")
 def seguidores(id):
   resultado = db.retornar(conn, SQL_USUA_EXIBIR_SEGUIDORES, [id])
@@ -91,7 +98,6 @@ def verificar(apelido):
   resultado = {'quantidade': quantidade}
 
   return jsonify(resultado)
-
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)

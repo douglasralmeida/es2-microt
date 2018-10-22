@@ -23,6 +23,8 @@ URLS:
    params: ?uid=num
  url/usuario/seguidos/@id		- URL para retornar aqueles que o usuário @id segue
 
+ url/usuario/info/@id			- URL para retornar dados básicos do usuário @id
+
 Módulo 2 - Mensagens
 ====================
 BD:

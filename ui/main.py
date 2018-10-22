@@ -62,7 +62,7 @@ def feed():
   else:
     uid = getUserIdByApelido(apelido)
     session['uid'] = uid
-  return make_response(render_template('feed.html'))
+  return make_response(render_template('feed.html', agregado='1'))
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)

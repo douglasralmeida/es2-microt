@@ -23,12 +23,23 @@
             </ul>
         </header>
         <div class="feed-container">
+            {% if agregado %}
             <aside class="painel-lateral">
-                <div class="profile-item" data-bind="text: usuarioNome"></div>
+                <div class="cartao profile-item">
+                    <div data-bind="text: usuarioNome"></div>
+                    <div>@<span data-bind="text: apelido"></span></div>
+                </div>
             </aside>
+            {% else %}
+            <section>
+                <div class="cartao header-item">
+                    <div>Profile do Usuário</div>
+                </div>
+            </section>
+            {% endif %}
             <div class="painel-central">
                 <ul class="feed-stream" data-bind="foreach: todosPosts">
-                    <li class="feed-item">
+                    <li class="cartao feed-item">
                         <span data-bind="text: conteudo"></span>
                     </li>
                 </ul>

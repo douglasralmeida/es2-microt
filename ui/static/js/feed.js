@@ -34,14 +34,25 @@ function httpget(url) {
     });
 };
 
-function obterFeedGeral(uid) {
-    var url = 'https://mtlt.herokuapp.com/lt/' + uid;
+function jsonget(url) {
+    return new Promise(function(res, rej) {
+        httpget(url).then(function(resp) {
+            var jsondata = JSON.parse(resp);
+            res(jsondata);
+        }), function() {
+            rej();
+        }
+    });
+}
+
+function obterUsuarioDados(uid) {
+    var url = '' + uid;
 
     return new Promise(function(res, rej) {
         httpget(url).then(function() {
             res();
         }), function(err) {
-            console.error("Falha na obteção da linha do tempo.", err);
+            console.error("Falha na obteção dos dados do usuário.", err);
             rej();
         }
     });
@@ -69,7 +80,12 @@ function AppViewModel() {
 
     //inicializar objetos observáveis
     self.todosPosts = ko.observableArray([]);
-    self.usuarioNome = ko.observable('Nome Usuario');
+    self.usuarioNome = ko.observable('NomeUsuario');
+    self.apelido = ko.observable(getCookie('apelido'));
+
+    self.atualizarUsuarioDados = function() {
+
+    }
 
     self.atualizarPosts = function() {
         self.todosPosts([]);
