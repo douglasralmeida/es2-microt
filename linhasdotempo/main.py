@@ -7,13 +7,13 @@ import json
 
 URL_MSG_BY_USER = 'https://mtmensagens.herokuapp.com/umsg/%s'
 URL_SEGUIDOS = 'https://mtusuarios.herokuapp.com/usuario/seguidos/%s'
+URL_USER_INFO = 'https://mtusuarios.herokuapp.com/usuario/info/%s'
 
 app = Flask(__name__)
 
-def addColunaUid(data, uid):
+def addColuna(data, nomecol, nome):
   for x in data:
-    x['uid'] = uid
-
+    x[nomecol] = nome
 
 def getListaUsuariosSeguidos(uid):
   lista = []
@@ -22,6 +22,11 @@ def getListaUsuariosSeguidos(uid):
   for x in data:
     lista.append(x['id_usuario'])
   return lista
+
+def getUsuarioNome(uid):
+  jsondata = urlopen(URL_USER_INFO % uid)
+  data = json.load(jsondata)
+  return data['nome']
 
 @app.after_request
 def after_request(response):
@@ -38,13 +43,14 @@ def home():
 def timelinetodos(id):
   jsondata = urlopen(URL_MSG_BY_USER % id)
   data = json.load(jsondata)
-  addColunaUid(data, id)
+  addColuna(data, 'nome', '*')
   lista = getListaUsuariosSeguidos(id)
   for usuario in lista:
     jsonmsgs = urlopen(URL_MSG_BY_USER % usuario)
+    nome = getUsuarioNome(usuario)
     msgs = json.load(jsonmsgs)
     for msg in msgs:
-      addColunaUid(msg, usuario)
+      addColuna(msg, 'nome', nome)
       data.append(msg)
   return jsonify(data)
 
