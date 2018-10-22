@@ -10,6 +10,19 @@ URL_SEGUIDOS = 'https://mtusuarios.herokuapp.com/usuario/seguidos/%s'
 
 app = Flask(__name__)
 
+def addColunaUid(data, uid):
+  for x in data:
+    x['uid'] = uid
+
+
+def getListaUsuariosSeguidos(uid):
+  lista = []
+  jsondata = urlopen(URL_SEGUIDOS % uid)
+  data = json.load(jsondata)
+  for x in data:
+    lista.append(x['id_usuario'])
+  return lista
+
 @app.after_request
 def after_request(response):
   response.headers.add('Access-Control-Allow-Origin', '*')
@@ -21,24 +34,18 @@ def after_request(response):
 def home():
   return 'microT Timeline Microservice'
 
-def getListaUsuarios(uid):
-  lista = []
-  jsondata = urlopen(URL_SEGUIDOS % uid)
-  data = json.load(jsondata)
-  for x in data:
-    lista.append(x['id_usuario'])
-  return lista
-
 @app.route("/lt/<id>")
 def timelinetodos(id):
   jsondata = urlopen(URL_MSG_BY_USER % id)
   data = json.load(jsondata)
-  lista = getListaUsuarios(id)
-  for i in lista:
-    jsonmsgs = urlopen(URL_MSG_BY_USER % i)
+  addColunaUid(data, id)
+  lista = getListaUsuariosSeguidos(id)
+  for usuario in lista:
+    jsonmsgs = urlopen(URL_MSG_BY_USER % usuario)
     msgs = json.load(jsonmsgs)
-    for j in msgs:
-      data.append(j)
+    for msg in msgs:
+      addColunaUid(msg, usuario)
+      data.append(msg)
   return jsonify(data)
 
 @app.route("/lt/usuario/<id>")
