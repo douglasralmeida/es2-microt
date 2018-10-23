@@ -60,6 +60,9 @@ def timelinetodos(id):
 def timeline(id):
   jsondata = urlopen(URL_MSG_BY_USER % id)
   data = json.load(jsondata)
+  nome = getUsuarioNome(id)
+  addColuna(data, 'nome', nome)
+  addColuna(data, 'userurl', '/u/'+id)
   return jsonify(data)
 
 if __name__ == '__main__':
