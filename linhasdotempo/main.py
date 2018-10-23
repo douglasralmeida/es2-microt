@@ -51,7 +51,7 @@ def timelinetodos(id):
     nome = getUsuarioNome(usuario)
     msgs = json.load(jsonmsgs)
     addColuna(msgs, 'nome', nome)
-    addColuna(msgs, 'userurl', '/u/'+usuario)
+    addColuna(msgs, 'userurl', '/u/' + str(usuario))
     for msg in msgs:
       data.append(msg)
   return jsonify(data)
