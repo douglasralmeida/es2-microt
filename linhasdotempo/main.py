@@ -44,7 +44,7 @@ def timelinetodos(id):
   jsondata = urlopen(URL_MSG_BY_USER % id)
   data = json.load(jsondata)
   addColuna(data, 'nome', '*')
-  addColuna(data, 'userurl', 'u/'+id)
+  addColuna(data, 'userurl', '/u/'+id)
   userurl
   lista = getListaUsuariosSeguidos(id)
   for usuario in lista:
@@ -53,7 +53,7 @@ def timelinetodos(id):
     msgs = json.load(jsonmsgs)
     for msg in msgs:
       addColuna(msg, 'nome', nome)
-      addColuna(data, 'userurl', 'u/'+usuario)
+      addColuna(data, 'userurl', '/u/'+usuario)
       data.append(msg)
   return jsonify(data)
 
