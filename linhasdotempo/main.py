@@ -11,9 +11,9 @@ URL_USER_INFO = 'https://mtusuarios.herokuapp.com/usuario/info/%s'
 
 app = Flask(__name__)
 
-def addColuna(data, nomecol, nome):
+def addColuna(data, nomecol, valor):
   for x in data:
-    x[nomecol] = nome
+    x[nomecol] = valor
 
 def getListaUsuariosSeguidos(uid):
   lista = []
@@ -50,9 +50,9 @@ def timelinetodos(id):
     jsonmsgs = urlopen(URL_MSG_BY_USER % usuario)
     nome = getUsuarioNome(usuario)
     msgs = json.load(jsonmsgs)
+    addColuna(msgs, 'nome', nome)
+    addColuna(msgs, 'userurl', '/u/'+usuario)
     for msg in msgs:
-      addColuna(msg, 'nome', nome)
-      addColuna(data, 'userurl', '/u/'+usuario)
       data.append(msg)
   return jsonify(data)
 
