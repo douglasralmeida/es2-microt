@@ -88,7 +88,11 @@
                         </div>
                     </div>
                 </div>
-                <ul class="feed-stream" data-bind="foreach: listaPosts, visible: (painelExibicao() == 0) && (!carregandoDados())">
+                <div class="cartao feed-postagem" data-bind="visible: getExibirFeed()">
+                    <textarea placeholder="Escreva sua postagem aqui" maxlength="140" rows="3" class="editor-postagem" data-bind="textInput: textoPostagem"></textarea>
+                    <button class="botao-publicar" data-bind="click: postar">Publicar</button>
+                </div>
+                <ul class="feed-stream" data-bind="foreach: listaPosts, visible: getExibirPosts()">
                     <li class="cartao feed-item">
                         <div class="text-feed-usuarionome">
                             <a class="text-feed-usuarionome" data-bind="text: nome, attr: {href: userurl}"></a>
@@ -98,7 +102,7 @@
                         </div>
                     </li>
                 </ul>
-                <ul class="usuarios-stream" data-bind="foreach: listaUsuarios, visible: painelExibicao() > 0 && (!carregandoDados())">
+                <ul class="usuarios-stream" data-bind="foreach: listaUsuarios, visible: getExibirUsuario()">
                     <li class="cartao usuario-item">
                         <div class="text-feed-usuarionome">
                             <a class="text-feed-usuarionome" data-bind="text: nome, attr: {href: userurl}"></a>

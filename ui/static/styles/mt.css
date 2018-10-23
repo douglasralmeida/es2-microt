@@ -162,6 +162,17 @@ body {
     text-decoration: none;
 }
 
+.botao-publicar {
+    float: right;
+    margin-right: 8px;
+}
+
+.feed-postagem {
+    margin-top: 15px;
+    margin-left: 45px;    
+    height: 104px;
+}
+
 .feed-item {
     list-style-type: none;    
     padding: 8px;
@@ -213,6 +224,14 @@ body {
     font-size: 1.6rem;
     font-weight: 600;
     line-height: 1.5;
+}
+
+.editor-postagem {
+    width: 512px;
+    height: 64px;
+    border: none;
+    font-weight: 200;
+    font-family: "Segoe UI","Helvetica Neue","Lucida Grande","Roboto","Ebrima","Nirmala UI","Gadugi","Segoe Xbox Symbol","Segoe UI Symbol","Meiryo UI","Khmer UI","Tunga","Lao UI","Raavi","Iskoola Pota","Latha","Leelawadee","Microsoft YaHei UI","Microsoft JhengHei UI","Malgun Gothic","Estrangelo Edessa","Microsoft Himalaya","Microsoft New Tai Lue","Microsoft PhagsPa","Microsoft Tai Le","Microsoft Yi Baiti","Mongolian Baiti","MV Boli","Myanmar Text","Cambria Math";
 }
 
 input[type="email"]:focus, input:focus {

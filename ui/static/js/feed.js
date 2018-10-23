@@ -114,6 +114,21 @@ function quemSouEu() {
     });
 }
 
+function sendPublicacao(uid, msg) {
+    var url = 'https://mtmensagens.herokuapp.com/msg/postar';
+
+    param = {uid: uid, conteudo: msg};
+    url = url + paramToGet(param);
+
+    return new Promise(function(res, rej) {
+        httpGet(url).then(function() {
+            res();
+        }, function() {
+            rej();
+        });
+    });
+}
+
 function setSeguirUsuario(seguidor, seguido, valor) {
     var urlseguir = 'https://mtusuarios.herokuapp.com/usuario/seguir/' + seguido;
     var urldeixarseguir = 'https://mtusuarios.herokuapp.com/usuario/deixar/' + seguido;
@@ -163,8 +178,21 @@ function AppViewModel() {
     self.numPostsPlaceHolders = ko.observableArray(['1', '2', '3']);
     self.textoSeguir = ko.observable('');
     self.textoTituloPerfil = ko.observable('');
+    self.textoPostagem = ko.observable('');
     self.apelido = ko.observable('');
     self.uid = ko.observable('');
+
+    self.getExibirFeed = function() {
+        return (self.painelExibicao() == PAINEL_POSTAGENS) && (!self.carregandoDados()) && (feedagregado == 'True');
+    };
+
+    self.getExibirPosts = function() {
+        return (self.painelExibicao() == PAINEL_POSTAGENS) && (!self.carregandoDados());
+    };
+
+    self.getExibirUsuario = function() {
+        return (self.painelExibicao() != PAINEL_POSTAGENS) && (!self.carregandoDados());
+    };
 
     self.clicarSeguir = function() {
         seguidor = self.uid();
@@ -203,6 +231,27 @@ function AppViewModel() {
             self.listaUsuarios(data);
             self.painelExibicao(PAINEL_SEGUINDOS);
         });
+    };
+
+    self.postar = function() {
+        var postagem = self.textoPostagem();
+        var uid = self.uid();
+        
+        console.log(postagem.length);
+        if (postagem.length > 0) {
+            self.carregandoDados(true);
+            sendPublicacao(uid, postagem).then(function() {
+                getPostsAgregado(feeduid).then(function(data) {
+                    adicionarNome(data);
+                    self.carregandoDados(false);
+                    self.listaPosts(data);
+                    self.textoPostagem('');
+                }, function() {
+                    self.textoPostagem('');
+                });
+                
+            });
+        }
     };
 
     self.atualizarUI = function() {

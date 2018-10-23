@@ -173,10 +173,8 @@ function AppViewModel() {
         var validationObservable = "form" + self.formAtual();
         if (self[validationObservable].isValid()) {
             credencial = Credencial(self.apelido());
-            entrarSistema(credencial).then(function() {
-              request();
-              window.location.replace('/feed');
-            });
+            entrarSistema(credencial);
+            //window.location.replace('/feed');
         } else {
             self[validationObservable].errors.showAllMessages();
             return false;
