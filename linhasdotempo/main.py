@@ -45,7 +45,6 @@ def timelinetodos(id):
   data = json.load(jsondata)
   addColuna(data, 'nome', '*')
   addColuna(data, 'userurl', '/u/'+id)
-  userurl
   lista = getListaUsuariosSeguidos(id)
   for usuario in lista:
     jsonmsgs = urlopen(URL_MSG_BY_USER % usuario)
