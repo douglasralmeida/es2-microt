@@ -74,7 +74,7 @@ body {
     float: left;
 }
 
-li a {
+.menu li a {
     display: block;
     color: white;
     text-align: center;
@@ -82,7 +82,7 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
+.menu li a:hover {
     background-color: #333;
 }
 
@@ -148,7 +148,7 @@ li a:hover {
     position: absolute;
     text-align: right;
 }
-    
+
 .texto-titulo {
     color: #404040;
     font-size: 1.5rem;
@@ -157,6 +157,22 @@ li a:hover {
     margin-top: 20px;
     margin-bottom: 12px;
     font-family: "Segoe UI","Helvetica Neue","Lucida Grande","Roboto","Ebrima","Nirmala UI","Gadugi","Segoe Xbox Symbol","Segoe UI Symbol","Meiryo UI","Khmer UI","Tunga","Lao UI","Raavi","Iskoola Pota","Latha","Leelawadee","Microsoft YaHei UI","Microsoft JhengHei UI","Malgun Gothic","Estrangelo Edessa","Microsoft Himalaya","Microsoft New Tai Lue","Microsoft PhagsPa","Microsoft Tai Le","Microsoft Yi Baiti","Mongolian Baiti","MV Boli","Myanmar Text","Cambria Math";
+}
+
+.text-feed-usuarionome {
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: rgba(0,0,0,.9);
+}
+
+.text-usuariolink {
+    color: rgba(0,0,0,0.6);
+}
+
+.text-usuarionome{
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.5;
 }
 
 input[type="email"]:focus, input:focus {

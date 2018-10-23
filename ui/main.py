@@ -1,6 +1,6 @@
 ## Módulo Interface do Usuário do microT
 
-from flask import Flask, render_template, request, make_response, session, redirect, url_for, abort
+from flask import Flask, render_template, request, make_response, session, redirect, url_for, abort, jsonify
 from urllib.request import urlopen
 import json
 import os
@@ -8,6 +8,7 @@ import sys
 
 URL_USERAPELIDO_BYID = 'http://mtusuarios.herokuapp.com/usuario/getid/%s'
 URL_CHECAR = 'https://mtusuarios.herokuapp.com/usuario/verificar/%s'
+URL_USER_SEGUIDOS = 'https://mtusuarios.herokuapp.com/usuario/seguidos/%s'
 CHAVE_SESSAO = os.environ['CHAVE_SESSOES']
 
 app = Flask(__name__)
@@ -18,7 +19,6 @@ def autenticarUsuario(apelido):
   data = json.load(jsondata)
   if 'uid' in session:
     session.pop('uid', None)
-  session['apelido'] = apelido
   res = data['quantidade'] > 0
 
   return res
@@ -29,6 +29,15 @@ def getUserIdByApelido(apelido):
   uid = res['data']['id_usuario']
 
   return uid
+
+def isUserSeguindo(seguidor, seguindo):
+  jsondata = urlopen(URL_USER_SEGUIDOS % seguidor)
+  data = json.load(jsondata)
+  for usuario in data:
+    if usuario['id_usuario'] == seguindo:
+        return True
+  
+  return False
 
 @app.route('/')
 def home():
@@ -43,6 +52,8 @@ def autenticar():
   if apelido is None:
     return redirect(url_for("login"), code=302)
   if autenticarUsuario(apelido):
+    session['apelido'] = apelido
+    session['uid'] = getUserIdByApelido(apelido)
     return redirect(url_for("feed"), code=302)
   else:
     return abort(401)
@@ -62,7 +73,20 @@ def feed():
   else:
     uid = getUserIdByApelido(apelido)
     session['uid'] = uid
-  return make_response(render_template('feed.html', agregado='1'))
+  session['feeduid'] = uid
+  return make_response(render_template('feed.html', agregado='1', feeduid=uid))
+
+@app.route('/u/<uid>')
+def usuariofeed(uid):
+  return make_response(render_template('feed.html', agregado='', feeduid=uid))
+
+@app.route('/quemsoueu')
+def quemsoueu():
+  resultado = dict()
+  resultado['apelido'] = session['apelido']
+  resultado['uid'] = session['uid']
+
+  return jsonify(resultado)
 
 if __name__ == '__main__':
   app.run(debug=True, use_reloader=True)

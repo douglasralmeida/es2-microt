@@ -5,8 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes" />
         <link href="favicon.ico" rel="shortcut icon">
-        <link title="CSS UI" href="static/styles/mt.css" rel="stylesheet" type="text/css">
-        <script type='text/javascript' src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js'></script>
+        <link title="CSS UI" href="/static/styles/mt.css" rel="stylesheet" type="text/css">
         <script type='text/javascript' src='https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js'></script>
         <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.3/knockout.validation.min.js'></script>
         <title>Feed de Notícias</title>
@@ -17,7 +16,7 @@
         </div>
         <header>
             <ul class="menu">
-                <li><a href="#">Início</a></li>
+                <li><a href="/feed">Início</a></li>
                 <li><a href="#">Excluir perfil</a></li>
                 <li><a href="#">Sair</a></li>   
             </ul>
@@ -26,21 +25,40 @@
             {% if agregado %}
             <aside class="painel-lateral">
                 <div class="cartao profile-item">
-                    <div data-bind="text: usuarioNome"></div>
-                    <div>@<span data-bind="text: apelido"></span></div>
+                    <div class="text-usuarionome" data-bind="text: usuarioNome"></div>
+                    <div>
+                        <a class="text-usuariolink" data-bind="attr: {href: usuarioUrl}">@<span data-bind="text: apelido"></span></a>
+                    </div>
+                    <div data-bind="text: usuarioBio"></div>
                 </div>
             </aside>
             {% else %}
             <section>
                 <div class="cartao header-item">
-                    <div>Profile do Usuário</div>
+                    <div>Perfil do Usuário</div>
+                    <div data-bind="text: usuarioNome"></div>
+                    <div data-bind="text: usuarioApelido"></div>
+                    <div data-bind="text: usuarioBio"></div>
+                    <div data-bind="visible: exibirSeguindo()">
+                        <div data-bind="visible: !usuarioSeguindo()">
+                            <a href="#">Seguir</a>
+                        </div>
+                        <div data-bind="visible: usuarioSeguindo()">
+                            <a href="#">Deixar de seguir</a>
+                        </div>
+                    </div>
                 </div>
             </section>
             {% endif %}
             <div class="painel-central">
-                <ul class="feed-stream" data-bind="foreach: todosPosts">
+                <ul class="feed-stream" data-bind="foreach: listaPosts">
                     <li class="cartao feed-item">
-                        <span data-bind="text: conteudo"></span>
+                        <div class="text-feed-usuarionome">
+                            <a class="text-feed-usuarionome" data-bind="text: nome, attr: {href: userurl}"></a>:
+                        </div>
+                        <div>
+                            <span data-bind="text: conteudo"></span>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -49,6 +67,10 @@
             <div class="container">
             </div>
         </form>
-        <script type='text/javascript' src='static/js/feed.js'></script>
+        <script type='text/javascript'>
+             var feeduid = '{{ feeduid }}';
+        </script>
+        <script type='text/javascript' src='/static/js/base.js'></script>
+        <script type='text/javascript' src='/static/js/feed.js'></script>
     </body>
 </html>

@@ -1,56 +1,19 @@
 /* Feed Page View-model */
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
+function adicionarNome(data) {
+    var len = data.length;
+    for (i = 0; i < len; i++) {
+        if (data[i].nome == "*")
+            data[i].nome = "Você";
     }
-    return "";
 }
 
-function httpget(url) {
-    return new Promise(function(res, rej) {
-        var req = new XMLHttpRequest();
-        req.open('GET', url);
-        req.onload = function() {
-            if (req.status == 200) {
-                res(req.responseText)
-            } else {
-                rej(Error(req.statusText));
-            };
-        };
-        req.onerror = function() {
-            rej(Error('Erro de rede'));
-        }
-        req.send();
-    });
-};
-
-function jsonget(url) {
-    return new Promise(function(res, rej) {
-        httpget(url).then(function(resp) {
-            var jsondata = JSON.parse(resp);
-            res(jsondata);
-        }), function() {
-            rej();
-        }
-    });
-}
-
-function obterUsuarioDados(uid) {
-    var url = '' + uid;
+function getUsuario(uid) {
+    var url = 'https://mtusuarios.herokuapp.com/usuario/info/' + uid;
 
     return new Promise(function(res, rej) {
-        httpget(url).then(function() {
-            res();
+        jsonGet(url).then(function(data) {
+            res(data);
         }), function(err) {
             console.error("Falha na obteção dos dados do usuário.", err);
             rej();
@@ -58,12 +21,70 @@ function obterUsuarioDados(uid) {
     });
 }
 
-function baixarPosts(id) {
+function getUsuarioSeguindos(uid) {
+    var url = 'https://mtusuarios.herokuapp.com/usuario/seguidos/' + uid;
+
     return new Promise(function(res, rej) {
-        var url = '';
-        var data = [{"conteudo":"Uma mensagem qualquer1","usuario":4},
-                    {"conteudo":"Uma mensagem qualquer2","usuario":5}];
-        res(data);
+        jsonGet(url).then(function(data) {
+            res(data);
+        }), function(err) {
+            console.error("Falha na obteção dos seguidos do usuário.", err);
+            rej();
+        }
+    });    
+}
+
+function getPostsAgregado(uid) {
+    var url = 'https://mtlt.herokuapp.com/lt/' + uid;
+
+    return new Promise(function(res, rej) {
+        jsonGet(url).then(function(data) {
+            res(data);
+        }), function(err) {
+            console.error("Falha na obteção da timeline.", err);
+            rej();
+        }
+    });
+}
+
+function getPostsIndividual(uid) {
+    var url = 'https://mtlt.herokuapp.com/lt/usuario/' + uid;
+
+    return new Promise(function(res, rej) {
+        jsonGet(url).then(function(data) {
+            res(data);
+        }), function(err) {
+            console.error("Falha na obteção da timeline individual.", err);
+            rej();
+        };
+    });
+}
+
+function isUsuarioSeguindo(uidSeguidor, uidSeguindo) {
+    return new Promise(function(res, rej) {
+        getUsuarioSeguindos(uidSeguidor).then(function(data) {
+            var len = data.length;
+            for (i = 0; i < len; i++) {
+                if (data[i].id_usuario == uidSeguindo)
+                    res(true);
+            }
+            res(false);
+        }), function() {
+            rej()
+        };
+    });
+}
+
+function quemSouEu() {
+    var url = window.location.origin + '/quemsoueu';
+
+    return new Promise(function(res, rej) {
+        jsonGet(url).then(function(data) {
+            res(data);
+        }), function(err) {
+            console.error("Falha na obteção dos dados básicos.", err);
+            rej();
+        }
     });
 }
 
@@ -79,22 +100,54 @@ function AppViewModel() {
     var self = this;
 
     //inicializar objetos observáveis
-    self.todosPosts = ko.observableArray([]);
-    self.usuarioNome = ko.observable('NomeUsuario');
-    self.apelido = ko.observable(getCookie('apelido'));
+    self.listaPosts = ko.observableArray([]);
+    self.usuarioId = ko.observable('');
+    self.usuarioApelido = ko.observable('');
+    self.usuarioBio = ko.observable('');
+    self.usuarioNome = ko.observable('');
+    self.usuarioUrl = ko.observable('');
+    self.usuarioSeguindo = ko.observable(false);
+    self.exibirSeguindo = ko.observable(false);
+    self.apelido = ko.observable('');
+    self.uid = ko.observable('');
 
-    self.atualizarUsuarioDados = function() {
+    self.atualizarUI = function() {
+        quemSouEu().then(function(data) {
+            self.apelido(data.apelido);
+            self.listaPosts([]);
+            self.uid(data.uid);
 
+            getUsuario(feeduid).then(function(usuario) {
+                self.usuarioApelido(usuario.apelido);
+                self.usuarioBio(usuario.bio);
+                self.usuarioNome(usuario.nome);
+                self.usuarioId(feeduid);
+                if (data.uid != feeduid) {
+                    isUsuarioSeguindo(data.uid).then(function(ret) {
+                        self.usuarioSeguindo(ret);
+                    });
+                }
+                else
+                    self.usuarioSeguindo = false;
+                self.exibirSeguindo(feeduid != data.uid);
+
+                self.usuarioUrl("/u/"+feeduid);
+            });
+
+            if (self.uid() == feeduid) {
+                getPostsAgregado(feeduid).then(function(data) {
+                    adicionarNome(data);
+                    self.listaPosts(data);
+                });
+            } else {
+                getPostsIndividual(feeduid).then(function(data) {
+                    adicionarNome(data);
+                    self.listaPosts(data);
+                });
+            }
+        })
     }
-
-    self.atualizarPosts = function() {
-        self.todosPosts([]);
-        baixarPosts(0).then(function(data) {
-            self.todosPosts(data);
-        });
-    }
-
-    self.atualizarPosts();
+    self.atualizarUI();
 };
 
 // Ativar knockout.js
