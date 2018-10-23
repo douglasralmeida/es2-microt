@@ -38,15 +38,18 @@ function cadastrarUsuario(apelido, nome, bio) {
         nome: nome,
         bio: bio
     };
-    var url = 'https://mtusuarios.herokuapp.com/usuario/registrar' + paramtoget(params);
+    var urlcadastro = 'https://mtusuarios.herokuapp.com/usuario/registrar' + paramtoget(params);
+    var urluicadastro = window.location.origin + '/cadastrar/' + apelido;
 
     return new Promise(function(res, rej) {
-        httpget(url).then(function() {
-            res();
+        httpget(urlcadastro).then(function() {
+            httpget(urluicadastro).then(function() {
+                res();
+            });
         }), function(err) {
             console.error("Falha no cadastro de usuário.", err);
             rej();
-        }
+        };
     });
 }
 
@@ -146,8 +149,10 @@ function AppViewModel() {
             var nome = self.nome();
 
             cadastrarUsuario(novoApelido, nome, bio).then(function(){
-                setCookie('apelido', novoApelido, 1);
-                window.location.replace('/feed');
+                credencial = Credencial(novoApelido);
+                entrarSistema(credencial).then(function(){
+                    window.location.replace('/feed');
+                });
             });
         } else {
             self[validationObservable].errors.showAllMessages();
@@ -174,7 +179,7 @@ function AppViewModel() {
         if (self[validationObservable].isValid()) {
             credencial = Credencial(self.apelido());
             entrarSistema(credencial);
-            //window.location.replace('/feed');
+            window.location.replace('/feed');
         } else {
             self[validationObservable].errors.showAllMessages();
             return false;

@@ -46,18 +46,18 @@ function checarApelido(apelido) {
 function entrarSistema(token) {
     url = window.location.origin + '/autenticar' + paramToGet(token);
 
-    window.location.replace(url);
-    /*return new Promise(function(res, rej) {
+    //window.location.replace(url);
+    return new Promise(function(res, rej) {
         httpget(url).then(function(resp) {
             console.log(resp);
         }), function(err) {
             rej(Error('Erro na autenticação.'));
         }
-    });*/
+    });
 };
 
 function sairSistema(apelido) {
-    url = window.location.origin + '/sair/' + apelido;
+    url = window.location.origin + '/sair';
 
     return new Promise(function(res, rej) {
         httpget(url).then(function(resp) {

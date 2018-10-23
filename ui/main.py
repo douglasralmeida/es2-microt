@@ -9,6 +9,7 @@ import sys
 URL_USERAPELIDO_BYID = 'http://mtusuarios.herokuapp.com/usuario/getid/%s'
 URL_CHECAR = 'https://mtusuarios.herokuapp.com/usuario/verificar/%s'
 URL_USER_SEGUIDOS = 'https://mtusuarios.herokuapp.com/usuario/seguidos/%s'
+URL_ABANDONAR = 'https://mtusuarios.herokuapp.com/usuario/abandonar/%s'
 CHAVE_SESSAO = os.environ['CHAVE_SESSOES']
 
 app = Flask(__name__)
@@ -46,9 +47,16 @@ def home():
   else:
     return redirect(url_for("login"), code=302)
 
+@app.route('/cadastrar/<apelido>')
+def cadastrar(apelido):
+  session['apelido'] = apelido
+
+  return redirect(url_for("feed"), code=302)
+
 @app.route('/autenticar')
 def autenticar():
   apelido = request.args.get('apelido')
+  print(apelido)
   if apelido is None:
     return redirect(url_for("login"), code=302)
   if autenticarUsuario(apelido):
@@ -57,6 +65,25 @@ def autenticar():
     return redirect(url_for("feed"), code=302)
   else:
     return abort(401)
+
+@app.route('/abandonar')
+def abandonar():
+  apelido = session['apelido']
+  if 'uid' in session:
+    uid = session['uid']
+  else:
+    uid = getUserIdByApelido(apelido)
+  urlopen(URL_ABANDONAR % uid)
+  session.pop('uid', None)
+  session.pop('apelido', None)
+  return redirect(url_for("login"), code=302)
+
+@app.route('/sair')
+def sair():
+  session.pop('uid', None)
+  session.pop('apelido', None)
+  return redirect(url_for("login"), code=302)
+
 
 @app.route('/login')
 def login():
