@@ -25,7 +25,7 @@
                                 <div role="alert">
                                     <div class="alerta" data-bind='validationMessage: apelido'></div>
                                 </div>
-                                <input class="controle-form" aria-label="Insira seu apelido" maxlength="20" placeholder="Apelido" data-bind="value: apelido" />
+                                <input class="controle-form" aria-label="Insira seu apelido" maxlength="16" placeholder="Apelido" data-bind="value: apelido" />
                                 <div class="linha">
                                     <a href="#" data-bind="click: cadastrar">Cadastrar na rede social</a>
                                 </div>
@@ -38,7 +38,7 @@
                                 <div role="alert">
                                     <div class="alerta" data-bind='validationMessage: novoApelido'></div>
                                 </div>
-                                <input class="controle-form" aria-label="Crie um apelido" maxlength="20" placeholder="Apelido" data-bind="value: novoApelido, disable: novoApelido.isValidating()" />
+                                <input class="controle-form" aria-label="Crie um apelido" maxlength="16" placeholder="Apelido" data-bind="value: novoApelido, disable: novoApelido.isValidating()" />
                                 <div class="rodape">
                                     <button data-bind="click: voltar">Voltar</button>
                                     <button data-bind="click: continuar">Continuar</button>                                    
@@ -49,8 +49,8 @@
                                 <div role="alert">
                                     <div class="alerta" data-bind='validationMessage: nome'></div>
                                 </div>
-                                <input class="controle-form" aria-label="Insira seu nome" maxlength="20" placeholder="Nome Completo" data-bind="value: nome" />
-                                <input class="controle-form" aria-label="Insira uma pequena biografia" maxlength="20" placeholder="Biografia" data-bind="value: bio" />
+                                <input class="controle-form" aria-label="Insira seu nome" maxlength="64" placeholder="Nome Completo" data-bind="value: nome" />
+                                <input class="controle-form" aria-label="Insira uma pequena biografia" maxlength="128" placeholder="Biografia" data-bind="value: bio" />
                                 <div class="rodape">
                                     <button data-bind="click: voltar">Voltar</button>
                                     <button data-bind="click: finalizar">Finalizar</button>

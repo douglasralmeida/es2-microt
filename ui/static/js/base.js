@@ -47,3 +47,12 @@ function jsonGet(url) {
         }
     });
 }
+
+/* Converte um objeto JSON numa lista de parametros para o método HTTP-Get */
+function paramToGet(params) {
+    return "?" + Object
+        .keys(params)
+        .map(function(key) {
+            return key+"="+encodeURIComponent(params[key])
+        }).join("&");
+};

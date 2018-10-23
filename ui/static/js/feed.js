@@ -1,5 +1,9 @@
 /* Feed Page View-model */
 
+const PAINEL_POSTAGENS = 0;
+const PAINEL_SEGUINDOS = 1;
+const PAINEL_SEGUIDORES = 2;
+
 function adicionarNome(data) {
     var len = data.length;
     for (i = 0; i < len; i++) {
@@ -21,11 +25,26 @@ function getUsuario(uid) {
     });
 }
 
+function getUsuarioSeguidores(uid) {
+    var url = 'https://mtusuarios.herokuapp.com/usuario/seguidores/' + uid;
+
+    return new Promise(function(res, rej) {
+        jsonGet(url).then(function(data) {
+            tratarListaUsuarios(data);
+            res(data);
+        }), function(err) {
+            console.error("Falha na obteção dos seguidores do usuário.", err);
+            rej();
+        }
+    });
+}
+
 function getUsuarioSeguindos(uid) {
     var url = 'https://mtusuarios.herokuapp.com/usuario/seguidos/' + uid;
 
     return new Promise(function(res, rej) {
         jsonGet(url).then(function(data) {
+            tratarListaUsuarios(data);
             res(data);
         }), function(err) {
             console.error("Falha na obteção dos seguidos do usuário.", err);
@@ -60,12 +79,12 @@ function getPostsIndividual(uid) {
     });
 }
 
-function isUsuarioSeguindo(uidSeguidor, uidSeguindo) {
+function isUsuarioSeguindo(seguidor, seguido) {
     return new Promise(function(res, rej) {
-        getUsuarioSeguindos(uidSeguidor).then(function(data) {
+        getUsuarioSeguindos(seguidor).then(function(data) {
             var len = data.length;
             for (i = 0; i < len; i++) {
-                if (data[i].id_usuario == uidSeguindo)
+                if (data[i].id_usuario == seguido)
                     res(true);
             }
             res(false);
@@ -73,6 +92,13 @@ function isUsuarioSeguindo(uidSeguidor, uidSeguindo) {
             rej()
         };
     });
+}
+
+function tratarListaUsuarios(lista) {
+    var len = lista.length;
+    for (i = 0; i < len; i++) {
+        lista[i].userurl = "/u/" + lista[i].id_usuario;   
+    }
 }
 
 function quemSouEu() {
@@ -88,6 +114,28 @@ function quemSouEu() {
     });
 }
 
+function setSeguirUsuario(seguidor, seguido, valor) {
+    var urlseguir = 'https://mtusuarios.herokuapp.com/usuario/seguir/' + seguido;
+    var urldeixarseguir = 'https://mtusuarios.herokuapp.com/usuario/deixar/' + seguido;
+    var url;
+
+    if (valor)
+      url = urlseguir;
+    else
+      url = urldeixarseguir;
+
+    param = {uid: seguidor};
+    url = url + paramToGet(param);
+
+    return new Promise(function(res, rej) {
+        httpGet(url).then(function() {
+            res();
+        }), function() {
+            rej();
+        };
+    });  
+}
+
 ko.validation.init({
     insertMessages: false,
     decorateInputElement: true,
@@ -101,15 +149,61 @@ function AppViewModel() {
 
     //inicializar objetos observáveis
     self.listaPosts = ko.observableArray([]);
+    self.listaUsuarios = ko.observableArray([]);
     self.usuarioId = ko.observable('');
     self.usuarioApelido = ko.observable('');
     self.usuarioBio = ko.observable('');
     self.usuarioNome = ko.observable('');
     self.usuarioUrl = ko.observable('');
     self.usuarioSeguindo = ko.observable(false);
+    self.carregandoPerfil = ko.observable(true);
+    self.carregandoDados = ko.observable(true);
+    self.painelExibicao = ko.observable(PAINEL_POSTAGENS);
     self.exibirSeguindo = ko.observable(false);
+    self.numPostsPlaceHolders = ko.observableArray(['1', '2', '3']);
+    self.textoSeguir = ko.observable('');
+    self.textoTituloPerfil = ko.observable('');
     self.apelido = ko.observable('');
     self.uid = ko.observable('');
+
+    self.clicarSeguir = function() {
+        seguidor = self.uid();
+        seguido = self.usuarioId();
+        valor = !self.usuarioSeguindo();
+        setSeguirUsuario(seguidor, seguido, valor).then(function() {
+            self.atualizarUI();
+        }, function() {
+            alert("Deu erro");
+        });
+    };
+
+    self.exibirPostagens = function() {
+        self.carregandoDados(true);
+        getPostsIndividual(feeduid).then(function(data) {
+            adicionarNome(data);
+            self.carregandoDados(false);
+            self.listaPosts(data);
+            self.painelExibicao(PAINEL_POSTAGENS);
+        });
+    };
+
+    self.exibirSeguidores = function() {
+        self.carregandoDados(true);
+        getUsuarioSeguidores(feeduid).then(function(data) {
+            self.carregandoDados(false);
+            self.listaUsuarios(data);
+            self.painelExibicao(PAINEL_SEGUIDORES);
+        });
+    };
+
+    self.exibirSeguindos = function() {
+        self.carregandoDados(true);
+        getUsuarioSeguindos(feeduid).then(function(data) {
+            self.carregandoDados(false);
+            self.listaUsuarios(data);
+            self.painelExibicao(PAINEL_SEGUINDOS);
+        });
+    };
 
     self.atualizarUI = function() {
         quemSouEu().then(function(data) {
@@ -118,31 +212,43 @@ function AppViewModel() {
             self.uid(data.uid);
 
             getUsuario(feeduid).then(function(usuario) {
+                self.carregandoPerfil(false);
                 self.usuarioApelido(usuario.apelido);
                 self.usuarioBio(usuario.bio);
                 self.usuarioNome(usuario.nome);
                 self.usuarioId(feeduid);
+                if (feeduid == data.uid)
+                        self.textoTituloPerfil('Seu Perfil')
+                    else
+                        self.textoTituloPerfil('Perfil do Usuário')
                 if (data.uid != feeduid) {
-                    isUsuarioSeguindo(data.uid).then(function(ret) {
+                    isUsuarioSeguindo(data.uid, feeduid).then(function(ret) {
                         self.usuarioSeguindo(ret);
+                        if (ret)
+                            self.textoSeguir('Deixar de seguir')
+                        else
+                            self.textoSeguir('Seguir');
                     });
                 }
                 else
-                    self.usuarioSeguindo = false;
+                    self.usuarioSeguindo(false);
                 self.exibirSeguindo(feeduid != data.uid);
-
                 self.usuarioUrl("/u/"+feeduid);
             });
 
-            if (self.uid() == feeduid) {
+            if (feedagregado == 'True') {
                 getPostsAgregado(feeduid).then(function(data) {
                     adicionarNome(data);
+                    self.carregandoDados(false);
                     self.listaPosts(data);
+                    self.painelExibicao(PAINEL_POSTAGENS);
                 });
             } else {
                 getPostsIndividual(feeduid).then(function(data) {
                     adicionarNome(data);
+                    self.carregandoDados(false);
                     self.listaPosts(data);
+                    self.painelExibicao(PAINEL_POSTAGENS);
                 });
             }
         })

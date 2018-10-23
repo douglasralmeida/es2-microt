@@ -134,12 +134,46 @@ body {
     
 }
 
+.header-dados {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 4px;
+    height: 128px;
+    margin: 0 12px;
+}
+
+.header-tab {
+    margin: 0 12px;
+    padding-bottom: 4px;
+    height: 36px;
+}
+
+.header-tab ul {
+    list-style-type: none;
+}
+
+.header-tab ul li {
+    float: left;
+}
+
+.header-tab ul li a {
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
 .feed-item {
     list-style-type: none;    
+    padding: 8px;
+}
+
+.usuario-item {
+    list-style-type: none;
+    padding: 8px;
 }
 
 .header-item {
-
+    padding-top: 16px;
 }
 
 .rodape {
@@ -157,6 +191,12 @@ body {
     margin-top: 20px;
     margin-bottom: 12px;
     font-family: "Segoe UI","Helvetica Neue","Lucida Grande","Roboto","Ebrima","Nirmala UI","Gadugi","Segoe Xbox Symbol","Segoe UI Symbol","Meiryo UI","Khmer UI","Tunga","Lao UI","Raavi","Iskoola Pota","Latha","Leelawadee","Microsoft YaHei UI","Microsoft JhengHei UI","Malgun Gothic","Estrangelo Edessa","Microsoft Himalaya","Microsoft New Tai Lue","Microsoft PhagsPa","Microsoft Tai Le","Microsoft Yi Baiti","Mongolian Baiti","MV Boli","Myanmar Text","Cambria Math";
+}
+
+.text-feed-titulo {
+    font-weight: 400;
+    font-size: 2.4rem;
+    margin-bottom: 16px;
 }
 
 .text-feed-usuarionome {

@@ -5,9 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes" />
         <link href="favicon.ico" rel="shortcut icon">
-        <link title="CSS UI" href="/static/styles/mt.css" rel="stylesheet" type="text/css">
-        <script type='text/javascript' src='https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js'></script>
-        <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.3/knockout.validation.min.js'></script>
+        <link rel="stylesheet" title="CSS UI" href="/static/styles/mt.css" type="text/css">
+        <link rel="stylesheet" href="/static/styles/placeholder-loading.min.css">
+        <script type='text/javascript' src='/static/js/knockout-3.4.2.js'></script>
+        <script type='text/javascript' src='/static/js/knockout.validation.min.js'></script>
         <title>Feed de Notícias</title>
     </head>
     <body style="background-color: #e6ecf0; overflow-y: scroll; position: relative;">
@@ -24,7 +25,22 @@
         <div class="feed-container">
             {% if agregado %}
             <aside class="painel-lateral">
-                <div class="cartao profile-item">
+                <div data-bind="visible: carregandoPerfil()">
+                    <div class="cartao feed-item">
+                        <div class="ph-item">
+                            <div class="ph-col-2">
+                                <div class="ph-avatar"></div>
+                            </div>
+                            <div>
+                                <div class="ph-row">
+                                    <div class="ph-col-12"></div>
+                                    <div class="ph-col-12"></div>
+                                </div>
+                            </div>                    
+                        </div>
+                    </div>
+                </div>
+                <div class="cartao profile-item" data-bind="visible: !carregandoPerfil()">
                     <div class="text-usuarionome" data-bind="text: usuarioNome"></div>
                     <div>
                         <a class="text-usuariolink" data-bind="attr: {href: usuarioUrl}">@<span data-bind="text: apelido"></span></a>
@@ -34,41 +50,66 @@
             </aside>
             {% else %}
             <section>
-                <div class="cartao header-item">
-                    <div>Perfil do Usuário</div>
-                    <div data-bind="text: usuarioNome"></div>
-                    <div data-bind="text: usuarioApelido"></div>
-                    <div data-bind="text: usuarioBio"></div>
-                    <div data-bind="visible: exibirSeguindo()">
-                        <div data-bind="visible: !usuarioSeguindo()">
-                            <a href="#">Seguir</a>
+                <div class="cartao">
+                    <div class="header-item">
+                        <div class="header-dados">
+                            <div class="text-feed-titulo" data-bind="text: textoTituloPerfil"></div>
+                            <div class="text-feed-usuarionome" data-bind="text: usuarioNome"></div>
+                            <div data-bind="text: usuarioApelido"></div>
+                            <div data-bind="text: usuarioBio"></div>
+                            <div data-bind="visible: exibirSeguindo()">
+                                <a href="#" data-bind="text: textoSeguir, click: clicarSeguir">Seguir</a>
+                            </div>                                    
                         </div>
-                        <div data-bind="visible: usuarioSeguindo()">
-                            <a href="#">Deixar de seguir</a>
+                        <div class="header-tab">
+                            <ul>
+                                <li><a href="#" data-bind="color: painelExibicao() == 0 ? '#283e4a' : 'black', click: exibirPostagens">Postagens</a></li>
+                                <li><a href="#" data-bind="color: painelExibicao() == 1 ? '#283e4a' : 'black', click: exibirSeguindos">Seguindo</a></li>
+                                <li><a href="#" data-bind="color: painelExibicao() == 2 ? '#283e4a' : 'black', click: exibirSeguidores">Seguidores</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </section>
             {% endif %}
             <div class="painel-central">
-                <ul class="feed-stream" data-bind="foreach: listaPosts">
+                <div data-bind="foreach: numPostsPlaceHolders, visible: carregandoDados()">
+                    <div class="cartao feed-item">
+                        <div class="ph-item">
+                            <div class="ph-col-2">
+                                <div class="ph-avatar"></div>
+                            </div>
+                            <div>
+                                <div class="ph-row">
+                                    <div class="ph-col-12"></div>
+                                    <div class="ph-col-12"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="feed-stream" data-bind="foreach: listaPosts, visible: (painelExibicao() == 0) && (!carregandoDados())">
                     <li class="cartao feed-item">
                         <div class="text-feed-usuarionome">
-                            <a class="text-feed-usuarionome" data-bind="text: nome, attr: {href: userurl}"></a>:
+                            <a class="text-feed-usuarionome" data-bind="text: nome, attr: {href: userurl}"></a>
                         </div>
                         <div>
                             <span data-bind="text: conteudo"></span>
                         </div>
                     </li>
                 </ul>
+                <ul class="usuarios-stream" data-bind="foreach: listaUsuarios, visible: painelExibicao() > 0 && (!carregandoDados())">
+                    <li class="cartao usuario-item">
+                        <div class="text-feed-usuarionome">
+                            <a class="text-feed-usuarionome" data-bind="text: nome, attr: {href: userurl}"></a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
-        <form name="form1" spellcheck="false">
-            <div class="container">
-            </div>
-        </form>
         <script type='text/javascript'>
              var feeduid = '{{ feeduid }}';
+             var feedagregado = '{{ agregado == '1' }}';
         </script>
         <script type='text/javascript' src='/static/js/base.js'></script>
         <script type='text/javascript' src='/static/js/feed.js'></script>
