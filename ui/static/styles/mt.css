@@ -13,6 +13,7 @@ body {
     font-weight: 400;
     font-size: 0.93rem;
     line-height: 1.25rem;
+    margin: 0;
     color: #262626;
 }
 
@@ -57,17 +58,34 @@ body {
     margin-top: 16px;
 }
 
-.menu {
-    background-color: #000;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 48px;
-    margin: 0;
-    padding: 0;
+.barra-esquerda {
+    display: flex;
+    flex: 1 0 auto;
+    flex-flow: row nowrap;
+    max-width: 100px;
+}
+
+.barra-central {
+    align-items: center;
+    display: flex;
+    flex: 1 1 0px;
+    flex-flow: row nowrap;
     overflow: hidden;
+}
+
+.barra-direita {
+    display: flex;
+    flex: 0 0 auto;
+    flex-flow: row nowrap;
+    height: 48px;
+    margin-left: auto;
+    min-width: 260px;
+}
+
+.menu {
     list-style-type: none;
-    position: absolute;
+    padding: 0;
+    margin: 0;
 }
 
 .menu li {
@@ -105,7 +123,6 @@ body {
     box-sizing: content-box;
     display: block;
     position: relative;
-    margin-top: 48px;
 }
 
 .painel-lateral {
@@ -167,6 +184,10 @@ body {
     margin-right: 8px;
 }
 
+.botao-pesquisar {
+    background-color: #f2f2f2;
+}
+
 .feed-postagem {
     margin-top: 15px;
     margin-left: 45px;    
@@ -226,6 +247,10 @@ body {
     line-height: 1.5;
 }
 
+.edit-pesquisa {
+    width: 312px;
+}
+
 .editor-postagem {
     width: 512px;
     height: 64px;
@@ -282,8 +307,13 @@ fieldset {
 }
 
 header {
-    top: 0px;
-    left: 0px;
-    position: fixed;
+    background-color: black;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    position: relative;
     width: 100%;
+    z-index: 0;
 }

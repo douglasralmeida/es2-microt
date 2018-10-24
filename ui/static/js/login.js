@@ -1,60 +1,21 @@
 /* Login Page View-model */
 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function paramtoget(params) {
-    return "?" + Object
-        .keys(params)
-        .map(function(key) {
-            return key+"="+encodeURIComponent(params[key])
-        }).join("&");
-};
-
-function checarexistencia(url) {
-    return new Promise(function(res, rej) {
-        httpget(url).then(function(resp) {
-            var data = JSON.parse(resp);
-            res(data.quantidade === 0);
-        }), function(err) {
-            rej(err);
-        }
-    });
-};
-
-function promiseTrue(param){
-    return new Promise(function(res, rej) {
-        res();
-    });
-};
-
 function cadastrarUsuario(apelido, nome, bio) {
     var params = {
         apelido: apelido,
         nome: nome,
         bio: bio
     };
-    var urlcadastro = 'https://mtusuarios.herokuapp.com/usuario/registrar' + paramtoget(params);
-
-    credencial = Credencial(apelido);
-    var urlautenticar = window.location.origin + '/autenticar' + paramToGet(credencial);
+    var urlcadastro = 'https://mtusuarios.herokuapp.com/usuario/registrar' + paramToGet(params);
 
     return new Promise(function(res, rej) {
-        httpget(urlcadastro).then(function() {
-            window.location.replace(urlautenticar);
+        httpGet(urlcadastro).then(function() {
+            res();
         }), function(err) {
             console.error("Falha no cadastro de usuário.", err);
             rej();
         };
     });
-}
-
-function logarUsuario(apelido) {
-    return true;
 }
 
 ko.validation.init({
@@ -149,7 +110,8 @@ function AppViewModel() {
             var nome = self.nome();
 
             cadastrarUsuario(novoApelido, nome, bio).then(function(){
-                
+                credencial = Credencial(self.apelido());
+                entrarSistema(credencial);
             });
         } else {
             self[validationObservable].errors.showAllMessages();
@@ -176,7 +138,6 @@ function AppViewModel() {
         if (self[validationObservable].isValid()) {
             credencial = Credencial(self.apelido());
             entrarSistema(credencial);
-            //window.location.replace('/feed');
         } else {
             self[validationObservable].errors.showAllMessages();
             return false;

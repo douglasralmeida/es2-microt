@@ -94,6 +94,39 @@ function isUsuarioSeguindo(seguidor, seguido) {
     });
 }
 
+function searchUsuario(valor) {
+    var urlgetid = 'https://mtusuarios.herokuapp.com/usuario/getid/' + valor;
+    var urlchecar = 'https://mtusuarios.herokuapp.com/usuario/verificar/' + valor;
+
+    var url = window.location.origin + '/u/';
+
+    promid = new Promise(function(res, rej) {
+        jsonGet(urlgetid).then(function(data) {
+            url = url + data.data.id_usuario;
+            window.location.replace(url);
+        }), function(err) {
+            console.error("Falha na obteção do ID do usuário.", err);
+            rej();
+        }
+    });
+
+    return new Promise(function(res, rej) {
+        jsonGet(urlchecar).then(function(data) {            
+            if (data.quantidade === 1) {
+                promid().then(function() {
+
+                }, function() {
+                    rej();
+                });
+            } else
+                res(0);
+        }), function(err) {
+            console.error("Falha na checagem do usuário.", err);
+            rej();
+        }
+    });
+}
+
 function tratarListaUsuarios(lista) {
     var len = lista.length;
     for (i = 0; i < len; i++) {
@@ -179,6 +212,7 @@ function AppViewModel() {
     self.textoSeguir = ko.observable('');
     self.textoTituloPerfil = ko.observable('');
     self.textoPostagem = ko.observable('');
+    self.textoPesquisa = ko.observable('');
     self.apelido = ko.observable('');
     self.uid = ko.observable('');
 
@@ -233,11 +267,26 @@ function AppViewModel() {
         });
     };
 
+    self.pesquisar = function() {
+        var pesquisa = self.textoPesquisa();
+        var url = window.location.origin + '/u/';
+
+        self.carregandoDados(true);
+        if (pesquisa.length > 0) {
+            self.carregandoDados(true);
+            searchUsuario(pesquisa).then(function(data) {
+                if (data > 0) {
+                    url = url + data;
+                    window.location.replace(url);
+                }
+            });
+        }
+    };
+
     self.postar = function() {
         var postagem = self.textoPostagem();
         var uid = self.uid();
-        
-        console.log(postagem.length);
+
         if (postagem.length > 0) {
             self.carregandoDados(true);
             sendPublicacao(uid, postagem).then(function() {
@@ -247,9 +296,8 @@ function AppViewModel() {
                     self.listaPosts(data);
                     self.textoPostagem('');
                 }, function() {
-                    self.textoPostagem('');
+
                 });
-                
             });
         }
     };

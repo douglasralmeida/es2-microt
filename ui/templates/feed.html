@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes" />
         <link href="favicon.ico" rel="shortcut icon">
         <link rel="stylesheet" title="CSS UI" href="/static/styles/mt.css" type="text/css">
-        <link rel="stylesheet" href="/static/styles/placeholder-loading.min.css">
+        <link rel="s    tylesheet" href="/static/styles/placeholder-loading.min.css">
         <script type='text/javascript' src='/static/js/knockout-3.4.2.js'></script>
         <script type='text/javascript' src='/static/js/knockout.validation.min.js'></script>
         <title>Feed de Notícias</title>
@@ -16,11 +16,21 @@
             
         </div>
         <header>
-            <ul class="menu">
-                <li><a href="/feed">Início</a></li>
-                <li><a href="/abandonar">Excluir perfil</a></li>
-                <li><a href="/sair">Sair</a></li>   
-            </ul>
+            <div class="barra-esquerda">
+                <ul class="menu">
+                    <li><a href="/feed">Início</a></li>
+                </ul>        
+            </div>
+            <div class="barra-central">
+                <input class="edit-pesquisa" placeholder="Abrir usuário" data-bind="textInput: textoPesquisa" />
+                <button class="botao-pesquisar" data-bind="click: pesquisar">Ir</button>
+            </div>
+            <div class="barra-direita">
+                <ul class="menu">
+                    <li><a href="/abandonar">Excluir perfil</a></li>
+                    <li><a href="/sair">Sair</a></li>   
+                </ul>
+            </div>
         </header>
         <div class="feed-container">
             {% if agregado %}
