@@ -207,8 +207,10 @@ function AppViewModel() {
     self.carregandoPerfil = ko.observable(true);
     self.carregandoDados = ko.observable(true);
     self.painelExibicao = ko.observable(PAINEL_POSTAGENS);
+    self.exibirBarraSuperior = ko.observable(false);
     self.exibirSeguindo = ko.observable(false);
     self.numPostsPlaceHolders = ko.observableArray(['1', '2', '3']);
+    self.textoBarraSuperior = ko.observable('');
     self.textoSeguir = ko.observable('');
     self.textoTituloPerfil = ko.observable('');
     self.textoPostagem = ko.observable('');
@@ -238,6 +240,11 @@ function AppViewModel() {
             alert("Deu erro");
         });
     };
+    
+    self.exibirMsg = function(msg) {
+        self.textoBarraSuperior(msg);
+        self.exibirBarraSuperior(true);
+    };   
 
     self.exibirPostagens = function() {
         self.carregandoDados(true);
@@ -271,15 +278,16 @@ function AppViewModel() {
         var pesquisa = self.textoPesquisa();
         var url = window.location.origin + '/u/';
 
-        self.carregandoDados(true);
         if (pesquisa.length > 0) {
-            self.carregandoDados(true);
             searchUsuario(pesquisa).then(function(data) {
                 if (data > 0) {
                     url = url + data;
                     window.location.replace(url);
                 }
             });
+        }
+        else {
+            self.exibirMsg('Nenhum usuário foi encontrado com o apelido ' + pesquisa + '.');
         }
     };
 
